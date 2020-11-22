@@ -4,12 +4,23 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
+    state: {
+        barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
+        barImage: 'https://i.ibb.co/CmhDXtS/43532.jpg',
+        drawer: null,
+    },
+    mutations: {
+        SET_BAR_IMAGE(state, payload) {
+            state.barImage = payload
+        },
+        SET_DRAWER(state, payload) {
+            state.drawer = payload
+        },
+    },
+    actions: {
+
+    },
+    modules: {
+
+    }
 })
