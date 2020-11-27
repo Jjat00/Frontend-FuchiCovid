@@ -22,7 +22,6 @@
                 :key="item.tab"
             >
                 <v-card flat>
-                <v-card-text>{{ item.content }}</v-card-text>
                 <crudMedicos v-if="item.tab == 'Medicos'"></crudMedicos>
                 <crudPacientes v-if="item.tab == 'Pacientes'"></crudPacientes>
 
@@ -48,8 +47,8 @@ export default {
       return {
         tab: null,
         items: [
-          { tab: 'Medicos', content: 'Tab 1 Content' },
-          { tab: 'Pacientes', content: 'Tab 2 Content' },
+          { tab: 'Medicos' },
+          { tab: 'Pacientes'},
         ],
       }
     },    
