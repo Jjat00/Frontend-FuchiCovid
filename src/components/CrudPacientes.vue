@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar flat color="white">
-      <v-toolbar-title>Información de médicos</v-toolbar-title>
+      <v-toolbar-title>Información de Pacientes</v-toolbar-title>
       <v-divider
         class="mx-2"
         inset

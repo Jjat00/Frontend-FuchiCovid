@@ -13,6 +13,7 @@
 <script>
 import DashboardCoreAppBar from "@/components/NavBar.vue"
 import DashboardCoreDrawer from "@/components/Drawer.vue"
+import { mapActions } from 'vuex';
 
 export default {
   name: 'App',
@@ -25,5 +26,13 @@ export default {
   data: () => ({
     //
   }),
+
+  methods: {
+    ...mapActions(['leerTokenFuncionario', 'leerTokenMedico'])
+  },
+  created(){
+    this.leerTokenFuncionario()
+    this.leerTokenMedico()
+  }
 };
 </script>

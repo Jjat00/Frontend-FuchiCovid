@@ -2,6 +2,7 @@
   <div>
     <v-toolbar flat color="white">
       <v-toolbar-title>Información de médicos</v-toolbar-title>
+      <h2>{{documentoFuncionario}}</h2>
       <v-divider
         class="mx-2"
         inset
@@ -22,12 +23,20 @@
                 <v-container grid-list-md>
                  <v-layout wrap>
                     <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.nombre" 
-                        label="Nombre" required></v-text-field>
+                      <v-text-field v-model="editedItem.nombre1" 
+                        label="Nombre 1" required></v-text-field>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.apellido" 
-                        label="Apellido" required></v-text-field>
+                      <v-text-field v-model="editedItem.nombre2" 
+                        label="Nombre 2" required></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                      <v-text-field v-model="editedItem.apellido1" 
+                        label="Apellido 1" required></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                      <v-text-field v-model="editedItem.apellido2" 
+                        label="Apellido 2" required></v-text-field>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.documento" 
@@ -53,7 +62,6 @@
                     <v-text-field v-model="editedItem.barrio" 
                         label="barrio" required></v-text-field>
                     </v-flex>
-
                     <v-row class="pa-2 mt-2 d-flex justify-center">
                         <v-btn class="mt-2" width="200" type="submit" 
                         large color="info">Registrar</v-btn>
@@ -77,8 +85,10 @@
     >
     <template v-slot:item="{ item }">
         <tr>
-            <td>{{ item.nombre }}</td>
-            <td class="text-xs-right">{{ item.apellido }}</td>
+            <td>{{ item.nombre1 }}</td>
+            <td>{{ item.nombre2 }}</td>
+            <td class="text-xs-right">{{ item.apellido1 }}</td>
+            <td class="text-xs-right">{{ item.apellido2 }}</td>
             <td class="text-xs-right">{{ item.documento }}</td>
             <td class="text-xs-right">{{ item.tipoDocumento }}</td>
             <td class="text-xs-right">{{ item.universidad }}</td>
@@ -102,48 +112,41 @@
             </td>
         </tr>
     </template> 
-
-<!--       <template v-slot:items="props">
-        <td>{{ props.item.nombre }}</td>
-        <td class="text-xs-right">{{ props.item.apellido }}</td>
-        <td class="justify-center layout px-0">
-          <v-icon
-            small
-            class="mr-2"
-            @click="editItem(props.item)"
-          >
-            mdi-pencil
-          </v-icon>
-          <v-icon
-            small
-            @click="deleteItem(props.item)"
-          >
-            mdi-delete
-          </v-icon>
-        </td>
-      </template> 
- -->
     </v-data-table>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
   export default {
     name: 'crudMedicos',
     data: () => ({
       dialog: false,
       headers: [
         {
-          text: 'Nombre',
+          text: 'Nombre1',
           align: 'center',
           sortable: false,
-          value: 'nombre'
+          value: 'nombre1'
         },
         {
-          text: 'Apellido',
+          text: 'Nombre2',
           align: 'center',
           sortable: false,
-          value: 'apellido'
+          value: 'nombre2'
+        },
+        {
+          text: 'Apellido1',
+          align: 'center',
+          sortable: false,
+          value: 'apellido1'
+        },
+        {
+          text: 'Apellido2',
+          align: 'center',
+          sortable: false,
+          value: 'apellido2'
         },
         { text: 'No. Documento', align: 'center', value: 'documento', sortable: false,},
         {
@@ -185,8 +188,10 @@
       ],
       editedIndex: -1,
       editedItem: {
-        nombre: '',
-        apellido: '',
+        nombre1: '',
+        nombre2: '',
+        apellido1: '',
+        apellido2: '',
         documento: 0,
         tipoDocumento: '',
         universidad: '',
@@ -195,8 +200,10 @@
         barrio: '',
       },
       defaultItem: {
-        nombre: '',
-        apellido: '',
+        nombre1: '',
+        nombre2: '',
+        apellido1: '',
+        apellido2: '',
         documento: 0,
         tipoDocumento: '',
         universidad: '',
@@ -207,6 +214,8 @@
     }),
 
     computed: {
+      ...mapState(['documentoFuncionario']),
+
       formTitle () {
         return this.editedIndex === -1 ? 'Regitrar médico' : 'Actualizar médico'
       }
@@ -226,8 +235,10 @@
       initialize () {
         this.medicos = [
           {
-            nombre: 'nombre1',
-            apellido: 'apellido1',
+            nombre1: 'nombre1',
+            nombre2: 'nombre1',
+            apellido1: 'apellido1',
+            apellido2: 'apellido1',
             documento: 104646454,
             tipoDocumento: 'T.I',
             universidad: 'U. Valle',
@@ -236,8 +247,10 @@
             barrio: 'Melendez',
           },
           {
-            nombre: 'nombre2',
-            apellido: 'apellido2',
+            nombre1: 'nombre2',
+            nombre2: 'nombre2',
+            apellido1: 'apellido2',
+            apellido2: 'apellido2',
             documento: 104646454,
             tipoDocumento: 'C.C',
             universidad: 'U. Valle',
@@ -246,8 +259,10 @@
             barrio: 'Capri',
           },
           {
-            nombre: 'nombre3',
-            apellido: 'apellido3',
+            nombre1: 'nombre3',
+            apellido1: 'apellido3',
+            nombre2: 'nombre3',
+            apellido2: 'apellido3',
             documento: 104646424,
             tipoDocumento: 'T.I',
             universidad: 'U. Valle',
@@ -257,7 +272,7 @@
           }
         ]
       },
-
+      
       editItem (item) {
         this.editedIndex = this.medicos.indexOf(item)
         this.editedItem = Object.assign({}, item)
@@ -281,10 +296,43 @@
         if (this.editedIndex > -1) {
           Object.assign(this.medicos[this.editedIndex], this.editedItem)
         } else {
-          this.medicos.push(this.editedItem)
+          this.addMedico(this.editedItem)
+          //this.medicos.push(this.editedItem)
         }
         this.close()
-      }
+      },
+
+      async addMedico(editedItem) {
+        let res = null;
+          try {
+            console.log(editedItem)
+            const myHeaders = new Headers();
+            const data = {
+              method: 'POST',
+                headers: myHeaders,
+                body: new URLSearchParams({
+                  'doctor_document': editedItem.documento,
+                  'type_of_document': editedItem.tipoDocumento,
+                  'name1': editedItem.nombre1,
+                  'name2': editedItem.nombre2,
+                  'lastname1': editedItem.apellido1,
+                  'lastname1': editedItem.apellido2,
+                  'university_name': editedItem.universidad,
+                  'entity_name':editedItem.entidad,
+                  'doctor_address': editedItem.direccion,
+                  'neighborhood': editedItem.barrio,
+                  'public_worker_ID':'1'
+                })
+              }
+              
+            /* console.log('Registrando medico...');
+            const response = await fetch('https://centromedicofuchicovid.herokuapp.com/createDoctor', data)
+            res = await response.json()
+            console.log(res) */
+            } catch (error) {
+                console.log(error)
+            } 
+        }      
     }
   }
 </script>
