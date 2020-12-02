@@ -7,6 +7,8 @@ export default new Vuex.Store({
     state: {
         barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
         barImage: 'https://i.ibb.co/CmhDXtS/43532.jpg',
+        //loginImage: 'http://drive.google.com/uc?export=view&id=1ZkvnhXpAjERgF2lQPN6Kw_2wI1LvbpZb',
+        loginImage: 'https://i.ibb.co/VmzYD8s/coronavirus-4972480-1920-3.png',
         drawer: null,
         documentoFuncionario: null,
         documentoMedico: null,
@@ -34,19 +36,20 @@ export default new Vuex.Store({
             console.log('inicio sesion funcionario')
             console.log(usuario)
             try {
-                /* const res = await fetch('https://centromedicofuchicovid.herokuapp.com/', {
+                const res = await fetch('https://centromedicofuchicovid.herokuapp.com/login', {
                     method: 'post',
                     headers: new Headers(),
                     body: new URLSearchParams({
-                        'documento': usuario.documento,
-                        'correo': usuario.correo,
+                        'document': usuario.documento,
+                        'password': usuario.password,
                     })
                 })
                 const resDB = await res.json()
-                console.log(resDB) */
+                console.log("------------------------------------")
+                console.log(resDB)
 
                 commit('setDocumentoFuncionario', usuario.documento)
-                commit('setDialogoSesion', false)
+                    //commit('setDialogoSesion', false)
                 localStorage.setItem('tokenFuncionario', usuario.documento)
             } catch (error) {
                 console.log(error)
@@ -81,7 +84,7 @@ export default new Vuex.Store({
                 }) */
                 const resDB = await res.json()
                 console.log(resDB)
-
+                console.log("******************")
                 commit('setDocumentoMedico', usuario.documento)
                 commit('setDialogoSesion', false)
                 localStorage.setItem('tokenMedico', usuario.documento)

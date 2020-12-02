@@ -2,12 +2,13 @@
   <v-container>
     <v-card
         class="mx-auto"
-        max-width="400"
-        max-height="500"
+        max-width="450"
+        max-height="600"
     >
-    <v-card-title class="mx-2 my-3">
-        Inicio de sesión de usuario
+    <v-card-title class="justify-center">
+        Inicio de Sesión de Usuario
     </v-card-title>
+    <v-divider></v-divider>
     <v-card-text>
         <v-form
         ref="form"
@@ -22,12 +23,18 @@
             required
             ></v-text-field>
 
-            <v-text-field
-              v-model="usuario.correo"
-              :rules="emailRules"
-              label="E-mail"
-              required
-            ></v-text-field>
+          <v-text-field
+            v-model="usuario.password"
+            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            :rules="[passwordRules.required, passwordRules.min]"
+            :type="show1 ? 'text' : 'password'"
+            required
+            name="input-10-1"
+            label="Password"
+            hint="At least 8 characters"
+            @click:append="show1 = !show1"
+            counter
+          ></v-text-field>            
             <router-link v-if="tipoUsuario == 'funcionario'" :to="{name:'Funcionarios'}">
                 <v-btn :disabled="!valid" dark class="mr-4 my-3"
                 block @click="validate"
@@ -54,13 +61,14 @@
 import { mapActions, mapState } from 'vuex'
 
 export default {
-    name: 'login',
+    name: 'loginUsuario',
     props: ['tipoUsuario'],
     data: () => ({
+      show1: false,
       valid: true,
       usuario:{
           documento: null,
-          correo: 'jjat@gmail.com',
+          password: '31324',
       },
       name: '',
       documentoRules: [
@@ -72,6 +80,11 @@ export default {
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
+      passwordRules: {
+          required: value => !!value || 'Required.',
+          min: v => v.length >= 8 || 'Min 8 characters',
+          emailMatch: () => ('The email and password you entered don\'t match'),
+        },
 
     }),
 
@@ -81,11 +94,11 @@ export default {
         if (this.valid) {
           if (this.tipoUsuario == 'funcionario') {
             this.loginFuncionario(this.usuario)          
-            this.$store.commit('setDialogoSesion', false)
+            //this.$store.commit('setDialogoSesion', false)
           }
           if (this.tipoUsuario == 'medico') {
             this.loginMedico(this.usuario)
-            this.$store.commit('setDialogoSesion', false)
+            //this.$store.commit('setDialogoSesion', false)
           }
         }
       },
@@ -108,4 +121,5 @@ export default {
   a {
     text-decoration: none;
   }
+
 </style>

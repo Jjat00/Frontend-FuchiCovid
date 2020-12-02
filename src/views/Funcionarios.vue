@@ -73,4 +73,8 @@ export default {
   a {
     text-decoration: none;
   }
+  div{
+      padding: 1rem;
+      padding-top: 0;
+  }
 </style>

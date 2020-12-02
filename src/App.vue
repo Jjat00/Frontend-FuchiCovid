@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-container>
-        <dashboard-core-app-bar/>
-        <dashboard-core-drawer/>
+         <!-- <dashboard-core-app-bar/> -->
+         <!-- <dashboard-core-drawer/>  -->
       <v-main>
         <router-view></router-view>
       </v-main>
@@ -36,3 +36,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+    div{
+        padding: 0;
+        border: 0;
+        margin-right: 0;
+        margin-left: 0;
+        max-width: 2000px;
+    }
+
+</style>

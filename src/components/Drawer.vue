@@ -9,7 +9,7 @@
     >
     <v-card>
       <v-card-text>
-        <login :tipo-usuario="tipoUsuario"/>
+        <loginUsuario :tipo-usuario="tipoUsuario"/>
       </v-card-text> 
     </v-card>
 
@@ -65,11 +65,11 @@
 
 <script>
   import { mapMutations, mapState,} from 'vuex'
-  import login from '@/components/Login.vue'
+  import loginUsuario from '@/components/LoginUsuario.vue'
   export default {
     name: 'DashboardCoreDrawer',
     components:{
-      login
+      loginUsuario
     },
     data () {
       return {
