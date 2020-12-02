@@ -30,8 +30,8 @@
                 :key="item.tab"
             >
             <v-card flat>
-                <crudMedicos v-if="item.tab == 'Medicos'"></crudMedicos>
-                <crudPacientes v-if="item.tab == 'Pacientes'"></crudPacientes>
+                <crud-medicos v-if="item.tab == 'Medicos'"></crud-medicos>
+                <crud-pacientes v-if="item.tab == 'Pacientes'"></crud-pacientes>
             </v-card>
             </v-tab-item>
             </v-tabs-items>
@@ -48,7 +48,7 @@ export default {
     name: 'Funcionarios',
     components:{
         crudMedicos,
-        crudPacientes
+        crudPacientes,
     },
     data () {
       return {

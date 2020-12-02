@@ -14,21 +14,28 @@ const routes = [{
         path: '/funcionarios',
         name: 'Funcionarios',
         component: () =>
-            import ( /* webpackChunkName: "about" */ '../views/Funcionarios.vue'),
+            import ( /* muestra la vista de funcionarios */ '../views/Funcionarios.vue'),
         meta: { rutaProtegidaFunc: true }
     },
     {
         path: '/medicos',
         name: 'Medicos',
         component: () =>
-            import ( /* webpackChunkName: "about" */ '../views/Medicos.vue'),
+            import ( /* muestra la vista de médicos*/ '../views/Medicos.vue'),
         meta: { rutaProtegida: true }
     },
     {
         path: '/informes',
         name: 'Informes',
         component: () =>
-            import ( /* webpackChunkName: "about" */ '../views/Informes.vue')
+            import ( /* muestra la vista de informes */ '../views/Informes.vue')
+    },
+    {
+        path: '/contactoEmergencia/:documentoPaciente',
+        name: 'ContactoEmergencia',
+        component: () =>
+            import ( /* muestra la vista de contactos de emergencía de cierto paciente */
+                '../views/ContactoEmergencia.vue')
     }
 ]
 

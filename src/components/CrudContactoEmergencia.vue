@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Documento Paciente: {{documentoPaciente}}</h1>
     <v-toolbar flat color="white">
       <v-toolbar-title>Contacto de emergencia</v-toolbar-title>
       <v-divider
@@ -109,9 +110,10 @@
 
 <script>
   export default {
-    name: 'contactoEmergencia',
+    name: 'crudContactoEmergencia',
     data: () => ({
       dialog: false,
+      documentoPaciente: null,
       headers: [
         { 
           text: 'Documento', 
@@ -199,33 +201,28 @@
     },
 
     created () {
+      this.documentoPaciente = this.$route.params.documentoPaciente
       this.initialize()
     },
 
     methods: {
-      initialize () {
-        this.contacto = [
-          {
-            documento: 1088597616,
-            nombre1: 'David',
-            nombre2: 'Fernando',
-            apellido1: 'Rodriguez',
-            apellido2: 'Arteaga',
-            celular: 3164578548,
-            relacion: 'Primo',
-            correo: 'fernando@gmail.com',
-          },
-          {
-            documento: 1084527610,
-            nombre1: 'Maria',
-            nombre2: 'Fernanda',
-            apellido1: 'Garcia',
-            apellido2: 'Rodriguez',
-            celular: 3164578548,
-            relacion: 'hermana',
-            correo: 'maria@gmail.com',
-          },
-        ]
+      async initialize () {
+        const res = await fetch(`https://centromedicofuchicovid.herokuapp.com/getEmergencyContact/${this.documentoPaciente}`)
+        const resDB = await res.json()
+        console.log(resDB)  
+        resDB.forEach(contactoPaciente => {
+            const auxContactoPacientes = {
+              documento: contactoPaciente.contact_document,
+              nombre1: contactoPaciente.name1,
+              nombre2: contactoPaciente.name2,
+              apellido1: contactoPaciente.lastname1,
+              apellido2: contactoPaciente.lastname2,
+              celular:contactoPaciente.phone,
+              relacion: contactoPaciente.relationship,
+              correo: contactoPaciente.email
+            }
+            this.contacto.push(auxContactoPacientes)
+        });                  
       },
       
       editItem (item) {

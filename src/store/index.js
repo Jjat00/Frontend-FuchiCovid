@@ -71,16 +71,16 @@ export default new Vuex.Store({
             console.log('inicio sesion medico')
             console.log(usuario)
             try {
-                /* const res = await fetch('https://centromedicofuchicovid.herokuapp.com/', {
+                /* const res = await fetch('https://centromedicofuchicovid.herokuapp.com/login/', {
                     method: 'post',
                     headers: new Headers(),
                     body: new URLSearchParams({
-                        'documento': usuario.documento,
-                        'correo': usuario.correo,
+                        'document': usuario.documento,
+                        'password': usuario.correo,
                     })
-                })
+                }) */
                 const resDB = await res.json()
-                console.log(resDB) */
+                console.log(resDB)
 
                 commit('setDocumentoMedico', usuario.documento)
                 commit('setDialogoSesion', false)

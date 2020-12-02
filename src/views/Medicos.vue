@@ -22,7 +22,6 @@
 
 <script>
 import visitaPaciente from '@/components/VisitaPaciente.vue'
-import contactoEmergencia from '@/components/ContactoEmergencia.vue'
 import crudPacientes from '@/components/CrudPacientes.vue'
 import { mapActions } from 'vuex'
 
@@ -31,7 +30,6 @@ export default {
     components:{
         crudPacientes,
         visitaPaciente,
-        contactoEmergencia
     },
     methods:{
         ...mapActions(['cerrarSesionMedico']),

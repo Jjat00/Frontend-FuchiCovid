@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar flat color="white">
-      <v-toolbar-title>Información de Pacientes</v-toolbar-title>
+      <v-toolbar-title>Información pacientes</v-toolbar-title>
       <v-divider
         class="mx-2"
         inset
@@ -21,15 +21,7 @@
             <form ref="form"  @submit.prevent="save">
                 <v-container grid-list-md>
                  <v-layout wrap>
-                    <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.nombre" 
-                        label="Nombre" required></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.apellido" 
-                        label="Apellido" required></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6 md4>
+                   <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.documento" 
                         label="documento" required></v-text-field>
                     </v-flex>
@@ -38,20 +30,48 @@
                         :items="itemsDocumentos" label="tipo documento" required></v-combobox>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.universidad" 
-                        label="universidad" required></v-text-field>
+                    <v-text-field v-model="editedItem.nombre1" 
+                        label="Nombre 1" required></v-text-field>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.entidad" 
-                        label="entidad" required></v-text-field>
+                    <v-text-field v-model="editedItem.nombre2" 
+                        label="Nombre 2" required></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.apellido1" 
+                        label="Apellido 1" required></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.apellido2" 
+                        label="Apellido 2" required></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.edad" 
+                        label="Edad" required></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.personasCasa" 
+                        label="Mo. personas en cas" required></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.documentoMedico" 
+                        label="Documento médico" required></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.coordenadas" 
+                        label="Coordenadas" required></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.ciudadInfeccion" 
+                        label="Ciudad de contagio" required></v-text-field>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.direccion" 
-                        label="direccion" required></v-text-field>
+                        label="Direccion" required></v-text-field>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.barrio" 
-                        label="barrio" required></v-text-field>
+                        label="Barrio" required></v-text-field>
                     </v-flex>
 
                     <v-row class="pa-2 mt-2 d-flex justify-center">
@@ -72,17 +92,24 @@
     </v-toolbar>
     <v-data-table
       :headers="headers"
-      :items="medicos"
+      :items="pacientes"
       class="elevation-1"
     >
     <template v-slot:item="{ item }">
         <tr>
-            <td>{{ item.nombre }}</td>
-            <td class="text-xs-right">{{ item.apellido }}</td>
+            <td class="text-xs-right">{{ item.fechaRegistro}}</td>
+            <td class="text-xs-right">{{ item.horaRegistro}}</td>
             <td class="text-xs-right">{{ item.documento }}</td>
             <td class="text-xs-right">{{ item.tipoDocumento }}</td>
-            <td class="text-xs-right">{{ item.universidad }}</td>
-            <td class="text-xs-right">{{ item.entidad }}</td>
+            <td class="text-xs-right">{{ item.nombre1 }}</td>
+            <td class="text-xs-right">{{ item.nombre2 }}</td>
+            <td class="text-xs-right">{{ item.apellido1}}</td>
+            <td class="text-xs-right">{{ item.apellido2}}</td>
+            <td class="text-xs-right">{{ item.edad }}</td>
+            <td class="text-xs-right">{{ item.personasCasa }}</td>
+            <td class="text-xs-right">{{ item.medico }}</td>
+            <td class="text-xs-right">{{ item.coordenadas }}</td>
+            <td class="text-xs-right">{{ item.ciudadInfeccion }}</td>
             <td class="text-xs-right">{{ item.direccion }}</td>
             <td class="text-xs-right">{{ item.barrio }}</td>
             <td class="justify-center layout px-0">  
@@ -95,34 +122,31 @@
             </v-icon>
             <v-icon
                 small
+                class="mr-2"
                 @click="deleteItem(item)"
             >
                 mdi-delete
             </v-icon>
-            </td>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  class="mt-1"
+                  icon text
+                >
+                <router-link :to="{name:'ContactoEmergencia', params:{documentoPaciente: item.documento}}">
+                  <v-icon small> 
+                    mdi-account-plus 
+                  </v-icon> 
+                </router-link>
+                </v-btn>
+              </template>
+              <span>Agregar contacto emergencia</span>
+            </v-tooltip>
+          </td>
         </tr>
     </template> 
-
-<!--       <template v-slot:items="props">
-        <td>{{ props.item.nombre }}</td>
-        <td class="text-xs-right">{{ props.item.apellido }}</td>
-        <td class="justify-center layout px-0">
-          <v-icon
-            small
-            class="mr-2"
-            @click="editItem(props.item)"
-          >
-            mdi-pencil
-          </v-icon>
-          <v-icon
-            small
-            @click="deleteItem(props.item)"
-          >
-            mdi-delete
-          </v-icon>
-        </td>
-      </template> 
- -->
     </v-data-table>
   </div>
 </template>
@@ -134,18 +158,23 @@
       dialog: false,
       headers: [
         {
-          text: 'Nombre',
+          text: 'Fecha registro',
           align: 'center',
           sortable: false,
-          value: 'nombre'
+          value: 'fechaRegistro'
         },
         {
-          text: 'Apellido',
+          text: 'Hora registro',
           align: 'center',
           sortable: false,
-          value: 'apellido'
+          value: 'horaRegistro'
         },
-        { text: 'No. Documento', align: 'center', value: 'documento', sortable: false,},
+        { 
+          text: 'No. Documento', 
+          align: 'center', 
+          value: 'documento', 
+          sortable: false,
+        },
         {
           text: 'Tipo documento',
           align: 'center',
@@ -153,16 +182,58 @@
           value: 'tipoDocumento'
         },
         {
-          text: 'Universidad',
+          text: 'Nombre 1',
           align: 'center',
           sortable: false,
-          value: 'universidad'
+          value: 'nombre1'
         },
         {
-          text: 'Entidad',
+          text: 'Nombre 2',
           align: 'center',
           sortable: false,
-          value: 'entidad'
+          value: 'nombre2'
+        },
+        {
+          text: 'Apellido 1',
+          align: 'center',
+          sortable: false,
+          value: 'apellido1'
+        },
+        {
+          text: 'Apellido 2',
+          align: 'center',
+          sortable: false,
+          value: 'apellido2'
+        },
+        {
+          text: 'Edad',
+          align: 'center',
+          sortable: false,
+          value: 'edad'
+        },
+        {
+          text: 'No. personas en casa',
+          align: 'center',
+          sortable: false,
+          value: 'personasCasa'
+        },
+        {
+          text: 'Médico',
+          align: 'center',
+          sortable: false,
+          value: 'medico'
+        },
+        {
+          text: 'Coordenadas',
+          align: 'center',
+          sortable: false,
+          value: 'coordenada'
+        },
+        {
+          text: 'Ciudad de infección',
+          align: 'center',
+          sortable: false,
+          value: 'ciudadInfeccion'
         },
         {
           text: 'Dirección',
@@ -178,97 +249,98 @@
         },
         { text: 'Actions',sortable: false }
       ],
-      medicos: [],
+      pacientes: [],
       itemsDocumentos: [
           'C.C',
           'C.E'
       ],
       editedIndex: -1,
       editedItem: {
-        nombre: '',
-        apellido: '',
-        documento: 0,
+        fechaRegistro: '',
+        horaRegistro: '',
+        documento: null,
         tipoDocumento: '',
-        universidad: '',
-        entidad: '',
+        nombre1: '',
+        nombre2: '',
+        apellido1: '',
+        apellido2: '',
+        edad:null,
+        personasCasa:null,
+        medico:null,
+        documentoMedico: 10459874521,
+        coordenadas:'',
+        ciudadInfeccion:'',
         direccion: '',
         barrio: '',
       },
       defaultItem: {
-        nombre: '',
-        apellido: '',
-        documento: 0,
+        fechaRegistro: '',
+        horaRegistro: '',
+        documento: null,
         tipoDocumento: '',
-        universidad: '',
-        entidad: '',
+        nombre1: '',
+        nombre2: '',
+        apellido1: '',
+        apellido2: '',
+        edad:null,
+        personasCasa:null,
+        medico:null,
+        documentoMedico: null,
+        coordenadas:'',
+        ciudadInfeccion:'',
         direccion: '',
         barrio: '',
       }
     }),
-
     computed: {
       formTitle () {
-        return this.editedIndex === -1 ? 'Regitrar médico' : 'Actualizar médico'
+        return this.editedIndex === -1 ? 'Registrar paciente' : 'Actualizar paciente'
       }
     },
-
     watch: {
       dialog (val) {
         val || this.close()
       }
     },
-
     created () {
       this.initialize()
     },
-
     methods: {
-      initialize () {
-        this.medicos = [
-          {
-            nombre: 'nombre1',
-            apellido: 'apellido1',
-            documento: 104646454,
-            tipoDocumento: 'T.I',
-            universidad: 'U. Valle',
-            entidad: 'Comfenalco',
-            direccion: 'Calle 4c#90-27',
-            barrio: 'Melendez',
-          },
-          {
-            nombre: 'nombre2',
-            apellido: 'apellido2',
-            documento: 104646454,
-            tipoDocumento: 'C.C',
-            universidad: 'U. Valle',
-            entidad: 'Comfenalco',
-            direccion: 'Calle 4c#95-27',
-            barrio: 'Capri',
-          },
-          {
-            nombre: 'nombre3',
-            apellido: 'apellido3',
-            documento: 104646424,
-            tipoDocumento: 'T.I',
-            universidad: 'U. Valle',
-            entidad: 'Comfenalco',
-            direccion: 'Calle 4c#99-27',
-            barrio: 'Melendez',
-          }
-        ]
+      async initialize () {
+        const res = await fetch('https://centromedicofuchicovid.herokuapp.com/getPatient/')
+        const resDB = await res.json()
+        console.log(resDB) 
+        resDB.forEach(paciente => {
+            const auxPacientes = {
+              fechaRegistro: paciente.register_date,
+              horaRegistro: paciente.register_hour,
+              documento: paciente.patient_document,
+              tipoDocumento: paciente.type_of_document,
+              nombre1: paciente.patient_name1,
+              nombre2: paciente.patient_name2,
+              apellido1: paciente.patient_lastname1,
+              apellido2: paciente.patient_lastname2,
+              edad: paciente.patient_age,
+              personasCasa: paciente.patient_roommates,
+              medico: paciente.doctor_name1 + ' ' + paciente.doctor_lastname1,
+              coordenadas: '0',
+              ciudadInfeccion: paciente.possible_infection_city,
+              direccion: paciente.patient_address,
+              barrio: paciente.neighborhood,
+            }
+            this.pacientes.push(auxPacientes)
+            console.log(auxPacientes)
+        });       
       },
-
       editItem (item) {
-        this.editedIndex = this.medicos.indexOf(item)
+        this.editedIndex = this.pacientes.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
-
       deleteItem (item) {
-        const index = this.medicos.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.medicos.splice(index, 1)
+        const index = this.pacientes.indexOf(item)
+        confirm('Are you sure you want to delete this item?') && this.pacientes.splice(index, 1)
       },
-
       close () {
         this.dialog = false
         setTimeout(() => {
@@ -276,15 +348,58 @@
           this.editedIndex = -1
         }, 300)
       },
-
       save () {
         if (this.editedIndex > -1) {
-          Object.assign(this.medicos[this.editedIndex], this.editedItem)
+          Object.assign(this.pacientes[this.editedIndex], this.editedItem)
         } else {
-          this.medicos.push(this.editedItem)
+          this.addPaciente(this.editedItem)
+          this.pacientes.push(this.editedItem)
         }
         this.close()
-      }
+      },
+      async addPaciente(editedItem) {
+        let res = null;
+          try {
+            console.log(editedItem)
+            console.log('Registrando paciente ...1');
+            const headers = new Headers();
+            const data = {
+              method: 'POST',
+                headers: headers,
+                body: new URLSearchParams({
+                  type_of_document: editedItem.tipoDocumento,
+                  patient_document: editedItem.documento,
+                  name1: editedItem.nombre1,
+                  name2: editedItem.nombre2,
+                  lastname1: editedItem.apellido1,
+                  lastname2: editedItem.apellido2,
+                  age: editedItem.edad,
+                  people_in_the_house: editedItem.personasCasa,
+                  coordinates: editedItem.coordenadas,
+                  possible_infection_city: editedItem.ciudadInfeccion,
+                  patient_address: editedItem.direccion,
+                  doctor_document: editedItem.documentoMedico,
+                  public_worker_ID: '1',
+                  neighborhood: editedItem.barrio
+                })
+            }
+            console.log('Registrando paciente...2');
+            const response = await fetch('https://centromedicofuchicovid.herokuapp.com/createPatient', data)
+            console.log('Registrando paciente...3');
+            console.log(response)
+            } catch (error) {
+                console.log(error)
+            } 
+
+        }      
     }
   }
 </script>
+
+
+<style scoped>
+  a {
+    color: rgb(104, 105, 107);
+    text-decoration: none;
+  }
+</style>
