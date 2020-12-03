@@ -16,7 +16,7 @@
           <v-card-title>
             <span class="headline">{{ formTitle }}</span>
           </v-card-title>
-
+      <!-- Crear nuevo paciente  -->
           <v-card-text>
             <form ref="form"  @submit.prevent="save">
                 <v-container grid-list-md>
@@ -81,7 +81,6 @@
                     </v-layout>
                 </v-container> 
             </form>                 
-
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -90,6 +89,8 @@
         </v-card>
       </v-dialog>
     </v-toolbar>
+    
+  <!-- Consultar pacientes  -->    
     <v-data-table
       :headers="headers"
       :items="pacientes"

@@ -2,25 +2,14 @@
     <div>
       <div>
         <v-row justify="center">
-    <v-dialog
-      v-model="drawerInicioSesion"
-      max-width="400"
-      max-heigth="600"
-    >
-    <v-card>
-      <v-card-text>
-        <loginUsuario :tipo-usuario="tipoUsuario"/>
-      </v-card-text> 
-    </v-card>
 
-    </v-dialog>
   </v-row>
       </div>
       <v-navigation-drawer
       v-model="drawer"
       :dark="barColor !== 'rgba(228, 226, 226, 1), rgba(255, 255, 255, 0.7)'"
       :right="$vuetify.rtl"
-      :src="barImage"
+      :src="loginImage"
       mobile-breakpoint="960"
       app
       width="260"
@@ -46,7 +35,6 @@
           <v-list-item
             v-for="item in items"
             :key="item.title"
-            :to="item.to"
             link
           >
             <v-list-item-icon>
@@ -54,7 +42,7 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title @click="iniciarSecion(item.title)"> {{ item.title}} </v-list-item-title>
+              <v-list-item-title  @click="mostrarCrud(item.title)"> {{ item.title}} </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -67,21 +55,22 @@
   import { mapMutations, mapState,} from 'vuex'
   import loginUsuario from '@/components/LoginUsuario.vue'
   export default {
-    name: 'DashboardCoreDrawer',
+    name: 'drawerFuncionarios',
     components:{
       loginUsuario
     },
     data () {
       return {
         tipoUsuario : '',
+        nombreCrud: null,
         items: [
           { 
-            title: 'Funcionarios', 
+            title: 'Registrar pacientes', 
             icon: 'mdi-account', 
             to: '/funcionarios', 
           },
           { 
-            title: 'Medicos', 
+            title: 'Registrar médicos', 
             icon: 'mdi-doctor', 
             to: '/medicos' 
           },
@@ -95,34 +84,13 @@
       }
     },
     methods: {
-      ...mapMutations(['setDialogoSesion']),
-
-      iniciarSecion(usuario){        
-        if (usuario == 'Funcionarios') {
-          console.log('iniciar sesion funcionarios')
-          this.tipoUsuario = 'funcionario'
-          if (this.documentoFuncionario != null) {
-            this.setDialogoSesion(false)
-          }else{
-            this.setDialogoSesion(true)
-          }  
-        }
-        if (usuario == 'Medicos') {
-          console.log('iniciar sesion medicos') 
-          this.tipoUsuario = 'medico'
-          if (this.documentoMedico != null) {
-            this.setDialogoSesion(false)
-          }else{
-            this.setDialogoSesion(true)
-          }            
-        }
-      
-        console.log(this.dialogoInicioSesion)
+      mostrarCrud(nombre){
+        console.log(nombre)
       }
     },
     computed: {
-      ...mapState(['barColor', 'barImage', 'dialogoInicioSesion',
-        'documentoFuncionario', 'documentoMedico']),
+      ...mapState(['barColor', 'loginImage', 'dialogoInicioSesion',
+        'documento']),
 
       drawer: {
         get () {
@@ -133,14 +101,6 @@
         },
       },
 
-      drawerInicioSesion: {
-        get () {
-          return this.$store.state.dialogoInicioSesion
-        },
-        set (val) {
-          this.$store.commit('setDialogoSesion', val)
-        },
-      },
 
       computedItems () {
         return this.items.map(this.mapItem)

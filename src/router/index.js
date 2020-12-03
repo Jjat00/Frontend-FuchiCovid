@@ -9,20 +9,21 @@ const routes = [{
         name: 'Home',
         component: () =>
             import ( /* muestra la vista home */ '../views/Home.vue'),
-        meta: { rutaProtegidaHome: true }
+        meta: { rutaProtegida: true }
     }, {
         path: '/login',
         name: 'Login',
         component: () =>
-            import ( /* muestra la vista home */ '../views/Login.vue')
+            import ( /* muestra la vista home */ '../views/Login.vue'),
     },
     {
         path: '/funcionarios',
         name: 'Funcionarios',
         component: () =>
             import ( /* muestra la vista de funcionarios */ '../views/Funcionarios.vue'),
-        meta: { rutaProtegidaFunc: true }
-    }, {
+        meta: { rutaProtegidaFunc: true },
+    },
+    {
         path: '/medicos',
         name: 'Medicos',
         component: () =>
@@ -49,33 +50,20 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const rutaEsProtegida = to.matched.some(
-        item => item.meta.rutaProtegida
-    )
 
-    const rutaFunc = to.matched.some(
-        item => item.meta.rutaProtegidaFunc
-    )
-
-    const rutaHome = to.matched.some(
-        item => item.meta.rutaProtegidaHome
-    )
-
-    if (rutaEsProtegida && store.state.documentoMedico === null) {
+    if (to.name == 'Funcionarios' &&
+        store.state.documentoFuncionario === null) {
         next('/login')
     } else {
         next()
     }
-    if (rutaFunc && store.state.documentoFuncionario === null) {
+    if (to.name == 'Medicos' && store.state.documentoMedico === null) {
         next('/login')
     } else {
         next()
     }
-    if (rutaHome && store.state.documentoFuncionario === null) {
-        next('/login')
-    } else {
-        next()
-    }
+
+
 })
 
 export default router

@@ -34,21 +34,18 @@
             hint="At least 8 characters"
             @click:append="show1 = !show1"
             counter
-          ></v-text-field>            
-            <router-link v-if="tipoUsuario == 'funcionario'" :to="{name:'Funcionarios'}">
-                <v-btn :disabled="!valid" dark class="mr-4 my-3"
+          ></v-text-field>        
+            <v-btn :disabled="!valid" dark class="mr-4 my-3"
                 block @click="validate"
                 >
-                    Login
-                </v-btn>
-            </router-link>
-            <router-link v-if="tipoUsuario == 'medico'" :to="{name:'Medicos'}">
-                <v-btn :disabled="!valid" dark class="mr-4 my-3"
-                block @click="validate"
-                >
-                    Login
-                </v-btn>
-            </router-link>
+                Login
+            </v-btn>
+          <!-- Mensaje Error -->
+            <div class="text-center">
+              <p v-if="showMensajeError" class="mensajeError">
+                Datos incorrectos
+              </p>
+            </div>
         </v-form>
     </v-card-text>
 
@@ -62,18 +59,18 @@ import { mapActions, mapState } from 'vuex'
 
 export default {
     name: 'loginUsuario',
-    props: ['tipoUsuario'],
     data: () => ({
       show1: false,
       valid: true,
+      showMensajeError: false,
       usuario:{
-          documento: null,
-          password: '31324',
+          documento: 1088597617,
+          password: 'jjatjjat',
       },
       name: '',
       documentoRules: [
         v => !!v || 'documento is required',
-        v => (v && v.length <= 10) || 'documento must be less than 10 characters',
+        /* v => (v && v.length <=7) || 'documento must be more than 8 characters', */
       ],
       email: '',
       emailRules: [
@@ -89,17 +86,27 @@ export default {
     }),
 
     methods: {
-      validate () {
+      async validate () {
         this.$refs.form.validate()
         if (this.valid) {
-          if (this.tipoUsuario == 'funcionario') {
-            this.loginFuncionario(this.usuario)          
+            await this.login(this.usuario)    
+            console.log('tipo de usuario: ')      
+            console.log(this.tipoUsuario)    
+            switch (this.tipoUsuario) {
+              case 'noExiste':
+                this.showMensajeError = true
+                break;
+              case 'medico':
+                this.$router.push('medicos')
+                break;
+              case 'funcionario':
+                this.$router.push('funcionarios')
+                break;
+            
+              default:
+                break;
+            }  
             //this.$store.commit('setDialogoSesion', false)
-          }
-          if (this.tipoUsuario == 'medico') {
-            this.loginMedico(this.usuario)
-            //this.$store.commit('setDialogoSesion', false)
-          }
         }
       },
       reset () {
@@ -109,10 +116,13 @@ export default {
         this.$refs.form.resetValidation()
       },
       ...mapActions([
-          'loginFuncionario',
-          'loginMedico'
+          'login'
       ])
     },
+    computed:{
+      ...mapState(['tipoUsuario'])
+    }
+
   }
 </script>
 
@@ -121,5 +131,8 @@ export default {
   a {
     text-decoration: none;
   }
-
+  .mensajeError{
+    font-size: 20px;
+    color: rgb(156, 24, 24);
+  }
 </style>

@@ -1,9 +1,10 @@
 <template>
   <v-app-bar
     id="app-bar" absolute app
-    color="transparent" flat height="75"
+    color="secondary" flat height="50"
   >
-    <v-btn class="mr-3" elevation="1" fab
+    <v-btn  color="button" dark
+      class="mr-3" elevation="1" fab
       small @click="setDrawer(!drawer)"
     >
       <v-icon v-if="value">
@@ -15,9 +16,8 @@
       </v-icon>
     </v-btn>
 
-    <v-toolbar-title
-    >
-      Fuchi covid
+    <v-toolbar-title class="titleLogin">
+      FuchiCovid
     </v-toolbar-title>
 
     <v-spacer />
@@ -53,3 +53,12 @@
     },
   }
 </script>
+
+<style scoped>
+    .titleLogin{
+        color: rgb(224, 224, 224);
+        padding-left: 10px;
+        font-weight: bold;
+        font-size: 30px;
+    }
+</style>

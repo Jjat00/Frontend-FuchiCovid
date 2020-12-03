@@ -2,20 +2,14 @@
 <v-app>
     <v-container>
         
-        <h1 class="titleLogin">FuchiCOVID</h1>
+        <!-- <h1 class="titleLogin">FuchiCOVID</h1> -->
 
         <v-img
             :src = loginImage
             max-width="1500">
          <v-row>
             <v-col>
-                <h1 class="mensaje text-center">
-                    FuchiCOVID, una aplicación diseñada para el registro y seguimiento 
-                    de pacientes diagnosticados con el virus del COVID-19.
-                </h1>
-            </v-col>
-            <v-col>
-                <loginUsuario class="login" tipo-usuario="funcionario"/>
+                <loginUsuario class="login"></loginUsuario>
             </v-col>
         </v-row> 
         </v-img>
@@ -45,7 +39,6 @@ export default {
     computed:{
         ...mapState(['loginImage'])
     }
-
 }
 </script>
 
@@ -62,15 +55,6 @@ export default {
         padding-left: 10px;
         background-color: rgb(42, 42, 42);
         font-size: 40px;
-    }
-    .mensaje{
-        font-weight: 800;
-        font-style: italic;
-        margin-top: 7rem;
-        margin-bottom: 8rem;
-        margin-left: 4rem;
-        font-size: 45px;
-        color: rgb(0, 0, 0);
     }
     .login{
         margin-top: 8rem;

@@ -263,14 +263,22 @@
               method: 'POST',
                 headers: myHeaders,
                 body: new URLSearchParams({
-                  'doctor_document': editedItem.NoVisita,
+                  'patient_document' : this.documentoPaciente, 
+                  'contact_document' : editedItem.documento, 
+                  'name1' : editedItem.nombre1, 
+                  'name2' : editedItem.nombre2, 
+                  'lastname1' : editedItem.apellido1, 
+                  'lastname2' : editedItem.apellido2, 
+                  'relationship' : editedItem.relacion, 
+                  'phone' : editedItem.celular, 
+                  'email' : editedItem.correo
                 })
               }
               
-            /* console.log('Registrando medico...');
-            const response = await fetch('https://centromedicofuchicovid.herokuapp.com/createDoctor', data)
+            console.log('Registrando contacto de emergencia...');
+            const response = await fetch('https://centromedicofuchicovid.herokuapp.com/createEmergencyContact', data)
             res = await response.json()
-            console.log(res) */
+            console.log(res) 
             } catch (error) {
                 console.log(error)
             } 

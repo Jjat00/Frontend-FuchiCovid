@@ -10,9 +10,9 @@ export default new Vuex.Store({
         //loginImage: 'http://drive.google.com/uc?export=view&id=1ZkvnhXpAjERgF2lQPN6Kw_2wI1LvbpZb',
         loginImage: 'https://i.ibb.co/VmzYD8s/coronavirus-4972480-1920-3.png',
         drawer: null,
+        tipoUsuario: null,
         documentoFuncionario: null,
         documentoMedico: null,
-        dialogoInicioSesion: null,
     },
     mutations: {
         SET_BAR_IMAGE(state, payload) {
@@ -21,21 +21,22 @@ export default new Vuex.Store({
         SET_DRAWER(state, payload) {
             state.drawer = payload
         },
+        setTipoUsuario(state, payload) {
+            state.tipoUsuario = payload
+        },
         setDocumentoFuncionario(state, payload) {
             state.documentoFuncionario = payload
         },
         setDocumentoMedico(state, payload) {
             state.documentoMedico = payload
-        },
-        setDialogoSesion(state, payload) {
-            state.dialogoInicioSesion = payload
-        },
+        }
     },
     actions: {
-        async loginFuncionario({ commit }, usuario) {
-            console.log('inicio sesion funcionario')
+        async login({ commit }, usuario) {
+            console.log('iniciando sesion...')
             console.log(usuario)
             try {
+                let nombreUsurio = null
                 const res = await fetch('https://centromedicofuchicovid.herokuapp.com/login', {
                     method: 'post',
                     headers: new Headers(),
@@ -45,70 +46,60 @@ export default new Vuex.Store({
                     })
                 })
                 const resDB = await res.json()
-                console.log("------------------------------------")
                 console.log(resDB)
+                nombreUsurio = resDB[0].doctor_name1
 
-                commit('setDocumentoFuncionario', usuario.documento)
-                    //commit('setDialogoSesion', false)
-                localStorage.setItem('tokenFuncionario', usuario.documento)
+                console.log('nombre de usuario: ')
+                console.log(nombreUsurio)
+                if (nombreUsurio != null) {
+                    commit('setTipoUsuario', 'medico')
+                    commit('setDocumentoMedico', usuario.documento)
+                    localStorage.setItem('tokenMedico', usuario.documento)
+                } else {
+                    commit('setTipoUsuario', 'funcionario')
+                    commit('setDocumentoFuncionario', usuario.documento)
+                    localStorage.setItem('tokenFuncionario', usuario.documento)
+                }
+
             } catch (error) {
                 console.log(error)
+                commit('setTipoUsuario', 'noExiste')
             }
         },
 
         leerTokenFuncionario({ commit }) {
             if (localStorage.getItem('tokenFuncionario')) {
+                console.log('obteniendo token')
+                console.log(localStorage.getItem('tokenFuncionario'))
                 commit('setDocumentoFuncionario', localStorage.getItem('tokenFuncionario'))
+                console.log('this.documentoFuncionario')
+                console.log(this.documentoFuncionario)
             } else {
                 commit('setDocumentoFuncionario', null)
             }
         },
-
-        cerrarSesionFuncionario({ commit }) {
-            console.log('cerrando sesion')
-            localStorage.removeItem('tokenFuncionario')
-            commit('setDocumentoFuncionario', null)
-        },
-
-        async loginMedico({ commit }, usuario) {
-            console.log('inicio sesion medico')
-            console.log(usuario)
-            try {
-                /* const res = await fetch('https://centromedicofuchicovid.herokuapp.com/login/', {
-                    method: 'post',
-                    headers: new Headers(),
-                    body: new URLSearchParams({
-                        'document': usuario.documento,
-                        'password': usuario.correo,
-                    })
-                }) */
-                const resDB = await res.json()
-                console.log(resDB)
-                console.log("******************")
-                commit('setDocumentoMedico', usuario.documento)
-                commit('setDialogoSesion', false)
-                localStorage.setItem('tokenMedico', usuario.documento)
-            } catch (error) {
-                console.log(error)
-            }
-        },
-
         leerTokenMedico({ commit }) {
             if (localStorage.getItem('tokenMedico')) {
+                console.log('obteniendo token')
+                console.log(localStorage.getItem('tokenMedico'))
                 commit('setDocumentoMedico', localStorage.getItem('tokenMedico'))
+                console.log('this.documentoFuncionario')
+                console.log(this.documentoFuncionario)
             } else {
                 commit('setDocumentoMedico', null)
             }
         },
-
+        cerrarSesionFuncionario({ commit }) {
+            console.log('cerrando sesion funcionario')
+            localStorage.removeItem('tokenFuncionario')
+            commit('setDocumentoFuncionario', null)
+        },
         cerrarSesionMedico({ commit }) {
-            console.log('cerrando sesion')
+            console.log('cerrando sesion medico')
             localStorage.removeItem('tokenMedico')
             commit('setDocumentoMedico', null)
-        },
-
-    },
-    modules: {
+        }
 
     }
+
 })

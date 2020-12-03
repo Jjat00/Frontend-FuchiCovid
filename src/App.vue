@@ -1,8 +1,7 @@
 <template>
   <v-app>
     <v-container>
-         <!-- <dashboard-core-app-bar/> -->
-         <!-- <dashboard-core-drawer/>  -->
+      <dashboard-core-app-bar/>
       <v-main>
         <router-view></router-view>
       </v-main>
@@ -11,28 +10,26 @@
 </template>
 
 <script>
+
+import { mapActions, mapState } from 'vuex';
 import DashboardCoreAppBar from "@/components/NavBar.vue"
-import DashboardCoreDrawer from "@/components/Drawer.vue"
-import { mapActions } from 'vuex';
 
 export default {
   name: 'App',
-
   components: {
-    DashboardCoreAppBar,
-    DashboardCoreDrawer
+    DashboardCoreAppBar
   },
-
-  data: () => ({
-    //
-  }),
-
   methods: {
-    ...mapActions(['leerTokenFuncionario', 'leerTokenMedico'])
+    ...mapActions(['leerTokenFuncionario','leerTokenMedico'])
+  },
+  computed:{
+    ...mapState(['documentoFuncionario', 'documentoMedico'])
   },
   created(){
     this.leerTokenFuncionario()
+    console.log(this.documentoFuncionario)
     this.leerTokenMedico()
+    console.log(this.documentoMedico)
   }
 };
 </script>

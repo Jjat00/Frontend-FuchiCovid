@@ -5,7 +5,7 @@
                 <h1>Medicos</h1>
             </v-col>
             <v-col cols="1">
-                <router-link :to="{name:'Home'}">
+                <router-link :to="{name:'Login'}">
                     <v-btn class="pa-2 mt-2 d-flex justify-left" min-width="0" text
                     @click="salirSesion"
                     >
@@ -14,29 +14,30 @@
                 </router-link>
             </v-col>
         </v-row>                
-        <crudPacientes/>
+
+        <pacientes-medico></pacientes-medico>
         <visitaPaciente/>
-        <contactoEmergencia/>
+
     </v-container>
 </template>
 
 <script>
-import visitaPaciente from '@/components/VisitaPaciente.vue'
-import crudPacientes from '@/components/CrudPacientes.vue'
 import { mapActions } from 'vuex'
+import visitaPaciente from '@/components/VisitaPaciente.vue'
+import pacientesMedico from '@/components/PacientesMedico.vue'
+
 
 export default {
     name: 'Medicos',
     components:{
-        crudPacientes,
         visitaPaciente,
+        pacientesMedico,
     },
     methods:{
         ...mapActions(['cerrarSesionMedico']),
         salirSesion(){
             this.cerrarSesionMedico()
-            location.reload();
-        }        
+        }
     }
 }
 </script>
