@@ -20,16 +20,17 @@ export default {
     DashboardCoreAppBar
   },
   methods: {
-    ...mapActions(['leerTokenFuncionario','leerTokenMedico'])
+    ...mapActions(['leerTokenFuncionario','leerTokenMedico', 
+      'leerNombreFuncionario', 'leerNombreMedico'])
   },
   computed:{
     ...mapState(['documentoFuncionario', 'documentoMedico'])
   },
   created(){
     this.leerTokenFuncionario()
-    console.log(this.documentoFuncionario)
     this.leerTokenMedico()
-    console.log(this.documentoMedico)
+    this.leerNombreFuncionario()
+    this.leerNombreMedico()
   }
 };
 </script>

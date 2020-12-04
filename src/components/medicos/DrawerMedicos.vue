@@ -17,11 +17,11 @@
       >
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title class="title">
-              Fuchi covid
+            <v-list-item-title class="title my-2">
+              {{nombreMedico}}
             </v-list-item-title>
             <v-list-item-subtitle>
-              items
+              {{documentoMedico}}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -88,8 +88,7 @@
 
     },
     computed: {
-      ...mapState(['barColor', 'imagenDrawer', 'dialogoInicioSesion',
-        'documento']),
+      ...mapState(['barColor', 'imagenDrawer','documentoMedico','nombreMedico']),
 
       drawer: {
         get () {

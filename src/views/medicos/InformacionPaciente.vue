@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container class="mx-4 mt-3 pr-4">
         <drawer-medicos/>
         <div class="mx-4">
             <h1>Paciente: {{paciente.nombre}} {{paciente.apellido}}</h1>

@@ -1,5 +1,5 @@
 <template>
-<v-container>
+<v-container class="mx-4 mt-2">
   <h1 class="mx-4">Pedidos</h1>
   <drawer-medicos/>
   <crud-pedidos/>

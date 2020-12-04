@@ -17,14 +17,14 @@
     >
     <template v-slot:item="{ item }">
         <tr>
-            <td class="text-xs-right">{{ item.NoReporte }}</td>
-            <td class="text-xs-right">{{ item.fecha }}</td>
-            <td class="text-xs-right">{{ item.hora }}</td>
-            <td class="text-xs-right">{{ item.promedioContagiados}}</td>
-            <td class="text-xs-right">{{ item.promedioEdad }}</td>
-            <td class="text-xs-right">{{ item.visitasDiarios }}</td>
-            <td class="text-xs-right">{{ item.visitasSemanales }}</td>
-            <td class="text-xs-right">{{ item.visitasMensuales }}</td>
+            <td class="text-center">{{ item.NoReporte }}</td>
+            <td class="text-center">{{ item.fecha }}</td>
+            <td class="text-center">{{ item.hora }}</td>
+            <td class="text-center">{{ item.promedioContagiados}}</td>
+            <td class="text-center">{{ item.promedioEdad }}</td>
+            <td class="text-center">{{ item.visitasDiarios }}</td>
+            <td class="text-center">{{ item.visitasSemanales }}</td>
+            <td class="text-center">{{ item.visitasMensuales }}</td>
         </tr>
     </template> 
     </v-data-table>        

@@ -13,11 +13,18 @@
       v-bind="$attrs"    
       >
 
-      
-      <h1 class="mx-2 my-2">Usuario 1</h1>
-      <h4 class="mx-2 my-2">user@gmail.com</h4>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title my-2">
+            {{nombrefuncianario}}
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            {{documentoFuncionario}}
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
 
-        <v-divider class="mb-4"></v-divider>
+        <v-divider></v-divider>
 
         <v-list
           dense
@@ -77,7 +84,8 @@
 
     },
     computed: {
-      ...mapState(['barColor', 'barImage', 'imagenDrawer', 'documento']),
+      ...mapState(['barColor', 'barImage', 'imagenDrawer', 
+        'documentoFuncionario','nombrefuncianario']),
 
       drawer: {
         get () {

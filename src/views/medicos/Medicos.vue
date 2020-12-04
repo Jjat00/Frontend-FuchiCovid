@@ -3,7 +3,7 @@
         <drawerMedicos></drawerMedicos>
         <v-row>
             <v-col class="mx-4">
-                <h1>Informes</h1>
+                <h1>Médicos</h1>
             </v-col>
             <v-col cols="1">
                 <router-link :to="{name:'Login'}">

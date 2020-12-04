@@ -59,24 +59,9 @@
     >
     <template v-slot:item="{ item }">
         <tr>
-            <td class="text-xs-right">{{ item.laboratorio }}</td>
-            <td class="text-xs-right">{{ item.medicina }}</td>
-            <td class="text-xs-right">{{ item.cantidad }}</td>
-            <td class="justify-center layout px-0">  
-            <v-icon
-                small
-                class="mr-2"
-                @click="editItem(item)"
-            >
-                mdi-pencil
-            </v-icon>
-            <v-icon
-                small
-                @click="deleteItem(item)"
-            >
-                mdi-delete
-            </v-icon>
-            </td>
+            <td class="text-center">{{ item.laboratorio }}</td>
+            <td class="text-center">{{ item.medicina }}</td>
+            <td class="text-center">{{ item.cantidad }}</td>
         </tr>
     </template> 
     </v-data-table>
@@ -104,13 +89,11 @@ import { mapState } from 'vuex'
           value: 'medicina'
         },
         {
-          text: 'Cantidad',
+          text: 'Cantidad tabletas x 12 pastas',
           align: 'center',
-          sortable: false,
+          sortable: true,
           value: 'cantidad'
         },
-
-        { text: 'Actions',sortable: false }
       ],
         stock: [],
         itemsLaboratorios: [
@@ -149,7 +132,6 @@ import { mapState } from 'vuex'
         val || this.close()
       }
     },
-
     created () {
       this.initialize()
     },
