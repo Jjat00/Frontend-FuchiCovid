@@ -230,12 +230,60 @@
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
-
+      async updateInfoContacto(editedItem) {
+          let res = null
+          try {
+              const myHeaders = new Headers();
+              const data = {
+              method: 'PUT',
+                headers: myHeaders,
+                body: new URLSearchParams({
+                'patient_document': this.documentoPaciente,
+                'contact_document': editedItem.documento,
+                'name1': editedItem.nombre1,
+                'name2': editedItem.nombre2,
+                'lastname1': editedItem.apellido1,
+                'lastname2': editedItem.apellido2,
+                'relationship': editedItem.relacion,
+                'phone':editedItem.celular,
+                'email': editedItem.correo
+                })
+              }
+              console.log(data)
+              console.log('Actualizando contacto...');
+              const response = await fetch('https://centromedicofuchicovid.herokuapp.com/editEmergencyContact', data)//************************************ CORREGI
+              console.log(response)
+          } catch (error) {
+              console.log(error)
+          }
+        },
       deleteItem (item) {
         const index = this.contacto.indexOf(item)
         confirm('Are you sure you want to delete this item?') && this.contacto.splice(index, 1)
+        this.editedItem = Object.assign({}, item)
+        this.deleteContacto(this.editedItem)
       },
+      async deleteContacto(editedItem) {
+            let res = null;
+            try {
+                const myHeaders = new Headers();
+                const data = {
+                method: 'DELETE',
+                    headers: myHeaders,
+                    body: new URLSearchParams({
+                    'patient_document': this.documentoPaciente,
+                    'contact_document': editedItem.documento
+                    })
+                }
 
+                const response = await fetch('https://centromedicofuchicovid.herokuapp.com/deleteEmergencyContact', data)
+                console.log(response)
+
+            } catch (error) {
+                console.log(error)
+            }
+            console.log(res)
+        },
       close () {
         this.dialog = false
         setTimeout(() => {
@@ -246,6 +294,7 @@
 
       save () {
         if (this.editedIndex > -1) {
+          this.updateInfoContacto(this.editedItem)
           Object.assign(this.contacto[this.editedIndex], this.editedItem)
         } else {
           this.addVisita(this.editedItem)

@@ -107,12 +107,6 @@
             >
                 mdi-pencil
             </v-icon>
-            <v-icon
-                small
-                @click="deleteItem(item)"
-            >
-                mdi-delete
-            </v-icon>
             </td>
         </tr>
     </template> 
@@ -266,12 +260,35 @@ import { mapState } from 'vuex'
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
-
-      deleteItem (item) {
-        const index = this.medicos.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.medicos.splice(index, 1)
-      },
-
+      async updateInfoMedicos(editedItem) {
+          let res = null
+          try {
+              const myHeaders = new Headers();
+              const data = {
+              method: 'PUT',
+                headers: myHeaders,
+                body: new URLSearchParams({
+                'nombre1': medico.doctor_name1,
+                'nombre2': medico.doctor_name2,
+                'apellido1': medico.doctor_lastname1,
+                'apellido2': medico.doctor_lastname2,
+                'documento': medico.doctor_document,
+                'tipoDocumento': medico.type_of_document,
+                'universidad': medico.university_name,
+                'entidad': medico.entity_name,
+                'direccion': medico.doctor_address,
+                'barrio': medico.neighborhood,
+                })
+              }
+              console.log(data)
+              console.log('Actualizando medico...');
+              const response = await fetch('https://centromedicofuchicovid.herokuapp.com/editDoctor', data)//************************************ CORREGIR
+              res = await response.json()
+              console.log(res)
+          } catch (error) {
+              console.log(error)
+          }
+        },
       close () {
         this.dialog = false
         setTimeout(() => {
@@ -282,6 +299,7 @@ import { mapState } from 'vuex'
 
       save () {
         if (this.editedIndex > -1) {
+          this.updateInfoMedicos(this.editedItem)
           Object.assign(this.medicos[this.editedIndex], this.editedItem)
         } else {
           this.addMedico(this.editedItem)

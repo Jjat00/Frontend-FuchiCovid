@@ -338,10 +338,68 @@
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
+      async updateInfoPaciente(editedItem) {
+          let res = null
+          try {
+              const myHeaders = new Headers();
+              const data = {
+              method: 'PUT',
+                headers: myHeaders,
+                body: new URLSearchParams({
+                'type_of_document': editedItem.tipoDocumento,
+                'patient_document': editedItem.documento,
+                'name1': editedItem.nombre1,
+                'name2': editedItem.nombre2,
+                'lastname1': editedItem.apellido1,
+                'lastname2': editedItem.apellido2,
+                'age': editedItem.edad,
+                'people_in_the_house': editedItem.personasCasa,
+                'coordinates': editedItem.coordenadas,
+                'possible_infection_city': editedItem.ciudadInfeccion,
+                'patient_address': editedItem.direccion,
+                'doctor_document': editedItem.documentoMedico,
+                'public_worker_ID': '1',
+                'neighborhood': editedItem.barrio
+                })
+              }
+              console.log(data)
+              console.log('Registrando paciente...');
+              const response = await fetch('https://centromedicofuchicovid.herokuapp.com/editPatient', data)
+              console.log('Registrando paciente...2');
+              res = await response.json()
+              console.log(res)
+          } catch (error) {
+              console.log(error)
+          }
+        },
       deleteItem (item) {
         const index = this.pacientes.indexOf(item)
         confirm('Are you sure you want to delete this item?') && this.pacientes.splice(index, 1)
+        this.editedItem = Object.assign({}, item)
+        this.deletePaciente(this.editedItem)
+
       },
+      async deletePaciente(editedItem) {
+            let res = null;
+            try {
+                const myHeaders = new Headers();
+                const data = {
+                method: 'DELETE',
+                    headers: myHeaders,
+                    body: new URLSearchParams({
+                    'patient_document': editedItem.documento
+                    })
+                }
+
+                const response = await fetch('https://centromedicofuchicovid.herokuapp.com/deletePatient', data)
+                //const resDB = await response.json()
+                console.log(response)
+
+            } catch (error) {
+                console.log(error)
+            }
+            console.log(res)
+        },
       close () {
         this.dialog = false
         setTimeout(() => {
@@ -351,11 +409,12 @@
       },
       save () {
         if (this.editedIndex > -1) {
+          this.updateInfoPaciente(this.editedItem)
           Object.assign(this.pacientes[this.editedIndex], this.editedItem)
         } else {
-          this.addPaciente(this.editedItem)
-          this.pacientes.push(this.editedItem)
-        }
+                  this.addPaciente(this.editedItem)
+                  this.pacientes.push(this.editedItem)
+               }
         this.close()
       },
       async addPaciente(editedItem) {
