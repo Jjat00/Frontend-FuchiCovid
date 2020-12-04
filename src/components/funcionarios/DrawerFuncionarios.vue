@@ -1,96 +1,83 @@
 <template>
+<v-container>
+    <!-- Navigation  -->
     <div>
-      <div>
-        <v-row justify="center">
-
-  </v-row>
-      </div>
       <v-navigation-drawer
       v-model="drawer"
       :dark="barColor !== 'rgba(228, 226, 226, 1), rgba(255, 255, 255, 0.7)'"
       :right="$vuetify.rtl"
-      :src="loginImage"
+      :src="imagenDrawer"
       mobile-breakpoint="960"
       app
-      width="260"
+      width="250"
       v-bind="$attrs"    
       >
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title class="title">
-              Fuchi covid
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              items
-            </v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
 
-        <v-divider></v-divider>
+      
+      <h1 class="mx-2 my-2">Usuario 1</h1>
+      <h4 class="mx-2 my-2">user@gmail.com</h4>
+
+        <v-divider class="mb-4"></v-divider>
 
         <v-list
           dense
           nav
         >
-          <v-list-item
+          <v-list-item class="items"
             v-for="item in items"
             :key="item.title"
+            :to="item.to"
             link
           >
-            <v-list-item-icon>
+            <v-list-item-icon class="icons">
               <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
+            </v-list-item-icon> 
 
             <v-list-item-content>
-              <v-list-item-title  @click="mostrarCrud(item.title)"> {{ item.title}} </v-list-item-title>
+              <v-list-item-title> {{ item.title}} </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
     </div>
-
+</v-container>
 </template>
 
 <script>
   import { mapMutations, mapState,} from 'vuex'
-  import loginUsuario from '@/components/LoginUsuario.vue'
+
   export default {
     name: 'drawerFuncionarios',
-    components:{
-      loginUsuario
-    },
+
     data () {
       return {
         tipoUsuario : '',
         nombreCrud: null,
         items: [
           { 
-            title: 'Registrar pacientes', 
-            icon: 'mdi-account', 
-            to: '/funcionarios', 
-          },
-          { 
             title: 'Registrar médicos', 
             icon: 'mdi-doctor', 
-            to: '/medicos' 
+            to: '/registroMedicos' 
+          },          
+          { 
+            title: 'Registrar pacientes', 
+            icon: 'mdi-account', 
+            to: '/registroPacientes', 
           },
           { 
           title: 'Informes', 
             icon: 'mdi-clipboard-outline', 
-            to: '/informes'
+            to: '/funcionarios'
           },
         ],
         right: null,
       }
     },
     methods: {
-      mostrarCrud(nombre){
-        console.log(nombre)
-      }
+
     },
     computed: {
-      ...mapState(['barColor', 'loginImage', 'dialogoInicioSesion',
-        'documento']),
+      ...mapState(['barColor', 'barImage', 'imagenDrawer', 'documento']),
 
       drawer: {
         get () {

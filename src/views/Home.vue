@@ -5,14 +5,13 @@
       max-width="3000"
       max-height="3000"
       >
-  
     <v-row align="center">
-            <v-col>
-                <h1 class="mensaje text-center">
-                    FuchiCOVID, una aplicación diseñada para el registro y seguimiento 
-                    de pacientes diagnosticados con el virus del COVID-19.
-                </h1>
-            </v-col>      
+      <v-col>
+        <v-img src="https://i.ibb.co/wBQZRnR/New-Project-5.png"
+          max-width="500"
+        >
+        </v-img>
+      </v-col>      
       <v-col class="buttons">
         <v-card
           class="mx-auto my-12"
@@ -20,7 +19,7 @@
         >
         <v-img
         height="230"
-        :src="barImage"
+        :src="imagenServidorPublico"
         ></v-img>
         <v-card-title>Funcionarios</v-card-title> 
         <v-card-actions>
@@ -43,7 +42,7 @@
         >
         <v-img
         height="230"
-        :src="barImage"
+        :src="imagenMedico"
         ></v-img>
         <v-card-title>Médicos</v-card-title> 
         <v-card-actions>
@@ -71,7 +70,7 @@ export default {
     
   },
       computed:{
-        ...mapState(['loginImage', 'barImage'])
+        ...mapState(['loginImage', 'imagenMedico', 'imagenServidorPublico'])
     }
 }
 </script>
@@ -85,13 +84,4 @@ export default {
     .button{
       width: 250px;
     }
-    .mensaje{
-        font-weight: 800;
-        font-style: italic;
-        margin-top: 7rem;
-        margin-bottom: 8rem;
-        margin-left: 4rem;
-        font-size: 30px;
-        color: rgb(0, 0, 0);
-    }    
 </style>

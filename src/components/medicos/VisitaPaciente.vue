@@ -1,16 +1,16 @@
 <template>
   <div>
     <v-toolbar flat color="white">
-      <v-toolbar-title>Visita paciente</v-toolbar-title>
+      <v-toolbar-title>Visitas médicas</v-toolbar-title>
       <v-divider
         class="mx-2"
         inset
-        vertical
+        vertical        
       ></v-divider>
       <v-spacer></v-spacer>
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
-          <v-btn dark class="mb-2" v-on="on">Nuevo</v-btn>
+          <v-btn dark class="mb-2" v-on="on">Nueva visita</v-btn>
         </template>
         <v-card>
           <v-card-title>
@@ -22,8 +22,9 @@
                 <v-container grid-list-md>
                  <v-layout wrap>
                     <v-flex xs12 sm6 md4>
-                      <v-text-field v-model="editedItem.medicamento" 
-                        label="Medicamento" required></v-text-field>
+                    <v-combobox v-model="editedItem.medicamento" 
+                        :items="itemsMedicinas" label="medicamento" required>
+                    </v-combobox>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                       <v-text-field v-model="editedItem.dosis" 
@@ -39,7 +40,7 @@
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                       <v-text-field v-model="editedItem.presion" 
-                        label="Presión ()" required></v-text-field>
+                        label="Presión (mm Hg)" required></v-text-field>
                     </v-flex>
                     <v-textarea
                       name="input-7-1"
@@ -98,10 +99,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
   export default {
     name: 'visitaPaciente',
     data: () => ({
+      documentoPaciente: null,
       dialog: false,
+      itemsMedicinas: [
+          'Chichanosol',
+          'Choclometanol',
+          'Mixamorranilo'
+        ],
       headers: [
         { 
           text: 'No. Visita', 
@@ -133,7 +141,7 @@
           value: 'temperatura'
         },
         {
-          text: 'Presión',
+          text: 'Presión (mm Hg)',
           align: 'center',
           sortable: false,
           value: 'presion'
@@ -169,6 +177,7 @@
     }),
 
     computed: {
+      ...mapState(['documentoMedico']),
       formTitle () {
         return this.editedIndex === -1 ? 'Registrar visita' : 'Actualizar visita'
       }
@@ -181,40 +190,33 @@
     },
 
     created () {
+      this.documentoPaciente = this.$route.params.documentoPaciente
       this.initialize()
     },
 
     methods: {
-      initialize () {
-        this.visitas = [
-          {
-            NoVisita: 1,
-            medicamento: 'Chichanosol',
-            dosis: 15,
-            peso: 70,
-            temperatura: 32,
-            presion: 24,
-            observaciones : 'tiene covid',
-          },
-          {
-            NoVisita: 2,
-            medicamento: 'Chichanosol',
-            dosis: 15,
-            peso: 70,
-            temperatura: 32,
-            presion: 24,
-            observaciones : 'fuera de riesgo',
-          },
-          {
-            NoVisita: 3,
-            medicamento: 'Chichanosol',
-            dosis: 15,
-            peso: 70,
-            temperatura: 32,
-            presion: 24,
-            observaciones : 'posible contagio',
-          },
-        ]
+      async initialize () {
+        try {
+          const res = await fetch(`https://centromedicofuchicovid.herokuapp.com/getRegistry/${this.documentoPaciente}`)
+          const resDB = await res.json()
+          console.log(resDB)
+          let NoVisita = 0
+          resDB.forEach(visita => {
+            NoVisita = NoVisita + 1
+            const auxVisita = {
+              NoVisita: NoVisita,
+              medicamento: visita.medicine_name,
+              dosis: visita.dose,
+              peso: visita.patient_weight,
+              temperatura: visita.patient_temperature,
+              presion: visita.blood_pressure,
+              observaciones : visita.observations,
+            }
+            this.visitas.push(auxVisita)
+          });
+        } catch (error) {
+          console.log(error)
+        }
       },
       
       editItem (item) {
@@ -255,14 +257,21 @@
               method: 'POST',
                 headers: myHeaders,
                 body: new URLSearchParams({
-                  'doctor_document': editedItem.NoVisita,
-                })
+                  'patient_document' : this.documentoPaciente,
+                  'doctor_document' : this.documentoMedico,
+                  'patient_weight' : editedItem.peso,
+                  'patient_temperature' : editedItem.temperatura,
+                  'blood_pressure' : editedItem.presion,
+                  'observations' : editedItem.observaciones,
+                  'medicine_name' : editedItem.medicamento,
+                  'dose' : editedItem.dosis
+                  })
               }
               
-            /* console.log('Registrando medico...');
-            const response = await fetch('https://centromedicofuchicovid.herokuapp.com/createDoctor', data)
+            console.log('Registrando visita...');
+            const response = await fetch('https://centromedicofuchicovid.herokuapp.com/createRegistry', data)
             res = await response.json()
-            console.log(res) */
+            console.log(res)
             } catch (error) {
                 console.log(error)
             } 

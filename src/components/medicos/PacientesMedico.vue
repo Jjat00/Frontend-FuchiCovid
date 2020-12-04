@@ -1,7 +1,7 @@
 <template>
     <v-container>
-        <h1>Pacientes Médico</h1>
-<v-data-table
+    <h1 class="mx-4">Tus pacientes</h1>
+    <v-data-table
       :headers="headers"
       :items="pacientes"
       class="elevation-1"
@@ -13,8 +13,6 @@
             <td class="text-xs-right">{{ item.nombre1 }}</td>
             <td class="text-xs-right">{{ item.apellido1}}</td>
             <td class="text-xs-right">{{ item.edad }}</td>
-            <td class="text-xs-right">{{ item.personasCasa }}</td>
-            <td class="text-xs-right">{{ item.coordenadas }}</td>
             <td class="text-xs-right">{{ item.ciudadInfeccion }}</td>
             <td class="text-xs-right">{{ item.direccion }}</td>
             <td class="text-xs-right">{{ item.barrio }}</td>
@@ -29,9 +27,9 @@
                   class="mt-1"
                   icon text
                 >
-                <router-link :to="{name:'ContactoEmergencia', params:{documentoPaciente: item.documento}}">
+                <router-link :to="{name:'InformacionPaciente', params:{documentoPaciente: item.documento}}">
                   <v-icon small> 
-                    mdi-account-plus 
+                    mdi-eye
                   </v-icon> 
                 </router-link>
                 </v-btn>
@@ -81,18 +79,6 @@ export default {
           align: 'center',
           sortable: false,
           value: 'edad'
-        },
-        {
-          text: 'No. personas en casa',
-          align: 'center',
-          sortable: false,
-          value: 'personasCasa'
-        },
-        {
-          text: 'Coordenadas',
-          align: 'center',
-          sortable: false,
-          value: 'coordenada'
         },
         {
           text: 'Ciudad de infección',

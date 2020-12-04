@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="mx-4">
     <v-toolbar flat color="white">
-      <v-toolbar-title>Información pacientes</v-toolbar-title>
+      <h2>Información pacientes</h2>
       <v-divider
         class="mx-2"
         inset
@@ -10,7 +10,7 @@
       <v-spacer></v-spacer>
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
-          <v-btn dark class="mb-2" v-on="on">Nuevo</v-btn>
+          <v-btn dark class="mb-2" v-on="on">Nuevo paciente</v-btn>
         </template>
         <v-card>
           <v-card-title>
@@ -51,7 +51,7 @@
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.personasCasa" 
-                        label="Mo. personas en cas" required></v-text-field>
+                        label="No. personas en cas" required></v-text-field>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.documentoMedico" 
@@ -76,7 +76,7 @@
 
                     <v-row class="pa-2 mt-2 d-flex justify-center">
                         <v-btn class="mt-2" width="200" type="submit" 
-                        large color="info">Registrar</v-btn>
+                        large dark>Registrar</v-btn>
                     </v-row>
                     </v-layout>
                 </v-container> 
@@ -268,7 +268,7 @@
         edad:null,
         personasCasa:null,
         medico:null,
-        documentoMedico: 10459874521,
+        documentoMedico: null,
         coordenadas:'',
         ciudadInfeccion:'',
         direccion: '',
@@ -308,30 +308,36 @@
     },
     methods: {
       async initialize () {
-        const res = await fetch('https://centromedicofuchicovid.herokuapp.com/getPatient/')
-        const resDB = await res.json()
-        console.log(resDB) 
-        resDB.forEach(paciente => {
-            const auxPacientes = {
-              fechaRegistro: paciente.register_date,
-              horaRegistro: paciente.register_hour,
-              documento: paciente.patient_document,
-              tipoDocumento: paciente.type_of_document,
-              nombre1: paciente.patient_name1,
-              nombre2: paciente.patient_name2,
-              apellido1: paciente.patient_lastname1,
-              apellido2: paciente.patient_lastname2,
-              edad: paciente.patient_age,
-              personasCasa: paciente.patient_roommates,
-              medico: paciente.doctor_name1 + ' ' + paciente.doctor_lastname1,
-              coordenadas: '0',
-              ciudadInfeccion: paciente.possible_infection_city,
-              direccion: paciente.patient_address,
-              barrio: paciente.neighborhood,
-            }
-            this.pacientes.push(auxPacientes)
-            console.log(auxPacientes)
-        });       
+        try {
+          this.pacientes = []
+          const res = await fetch('https://centromedicofuchicovid.herokuapp.com/getPatient/')
+          const resDB = await res.json()
+          console.log(resDB) 
+          resDB.forEach(paciente => {
+              const nuevaFecha = paciente.register_date.substring(0,10)
+              const auxPacientes = {
+                fechaRegistro: nuevaFecha,
+                horaRegistro: paciente.register_hour,
+                documento: paciente.patient_document,
+                tipoDocumento: paciente.type_of_document,
+                nombre1: paciente.patient_name1,
+                nombre2: paciente.patient_name2,
+                apellido1: paciente.patient_lastname1,
+                apellido2: paciente.patient_lastname2,
+                edad: paciente.patient_age,
+                personasCasa: paciente.patient_roommates,
+                medico: paciente.doctor_name1 + ' ' + paciente.doctor_lastname1,
+                coordenadas: paciente.coordinates,
+                ciudadInfeccion: paciente.possible_infection_city,
+                direccion: paciente.patient_address,
+                barrio: paciente.neighborhood,
+              }
+              this.pacientes.push(auxPacientes)
+              console.log(auxPacientes)
+          });       
+        } catch (error) {
+          console.log(error)
+        }
       },
       editItem (item) {
         this.editedIndex = this.pacientes.indexOf(item)
@@ -341,6 +347,8 @@
       deleteItem (item) {
         const index = this.pacientes.indexOf(item)
         confirm('Are you sure you want to delete this item?') && this.pacientes.splice(index, 1)
+        this.editedItem = Object.assign({}, item)
+        this.deletePaciente(this.editedItem)        
       },
       close () {
         this.dialog = false
@@ -351,10 +359,10 @@
       },
       save () {
         if (this.editedIndex > -1) {
+          this.updateInfoPaciente(this.editedItem)
           Object.assign(this.pacientes[this.editedIndex], this.editedItem)
         } else {
           this.addPaciente(this.editedItem)
-          this.pacientes.push(this.editedItem)
         }
         this.close()
       },
@@ -388,11 +396,64 @@
             const response = await fetch('https://centromedicofuchicovid.herokuapp.com/createPatient', data)
             console.log('Registrando paciente...3');
             console.log(response)
+            this.initialize()
             } catch (error) {
                 console.log(error)
             } 
-
-        }      
+        },
+      async updateInfoPaciente(editedItem) {
+          let res = null
+          try {
+              const myHeaders = new Headers();
+              const data = {
+              method: 'PUT',
+                headers: myHeaders,
+                body: new URLSearchParams({
+                'type_of_document': editedItem.tipoDocumento,
+                'patient_document': editedItem.documento,
+                'name1': editedItem.nombre1,
+                'name2': editedItem.nombre2,
+                'lastname1': editedItem.apellido1,
+                'lastname2': editedItem.apellido2,
+                'age': editedItem.edad,
+                'people_in_the_house': editedItem.personasCasa,
+                'coordinates': editedItem.coordenadas,
+                'possible_infection_city': editedItem.ciudadInfeccion,
+                'patient_address': editedItem.direccion,
+                'doctor_document': editedItem.documentoMedico,
+                'public_worker_ID': '1',
+                'neighborhood': editedItem.barrio
+                })
+              }
+              console.log(data)
+              console.log('Registrando paciente...');
+              const response = await fetch('https://centromedicofuchicovid.herokuapp.com/editPatient', data)
+              console.log('Registrando paciente...2');
+              res = await response.json()
+              console.log(res)
+          } catch (error) {
+              console.log(error)
+          }
+        },        
+        async deletePaciente(editedItem) {
+            let res = null;
+            try {
+                const myHeaders = new Headers();
+                const data = {
+                method: 'DELETE',
+                    headers: myHeaders,
+                    body: new URLSearchParams({
+                    'patient_document': editedItem.documento
+                    })
+                }
+                const response = await fetch('https://centromedicofuchicovid.herokuapp.com/deletePatient', data)
+                //const resDB = await response.json()
+                console.log(response)
+            } catch (error) {
+                console.log(error)
+            }
+            console.log(res)
+        },        
     }
   }
 </script>

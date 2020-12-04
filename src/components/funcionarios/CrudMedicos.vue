@@ -1,8 +1,7 @@
 <template>
-  <div>
+  <div class="mx-4">
     <v-toolbar flat color="white">
-      <v-toolbar-title>Información de médicos</v-toolbar-title>
-      <h2>{{documentoFuncionario}}</h2>
+      <h2>Información de médicos</h2>
       <v-divider
         class="mx-2"
         inset
@@ -11,7 +10,7 @@
       <v-spacer></v-spacer>
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
-          <v-btn dark class="mb-2" v-on="on">Nuevo</v-btn>
+          <v-btn dark class="mb-2" v-on="on">Nuevo médico</v-btn>
         </template>
         <v-card>
           <v-card-title>
@@ -44,7 +43,8 @@
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                     <v-combobox v-model="editedItem.tipoDocumento" 
-                        :items="itemsDocumentos" label="tipo documento" required></v-combobox>
+                        :items="itemsDocumentos" label="tipo documento" required>
+                    </v-combobox>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.universidad" 
@@ -68,7 +68,7 @@
                     </v-flex>
                     <v-row class="pa-2 mt-2 d-flex justify-center">
                         <v-btn class="mt-2" width="200" type="submit" 
-                        large color="info">Registrar</v-btn>
+                        large dark>Registrar</v-btn>
                     </v-row>
                     </v-layout>
                 </v-container> 
@@ -106,12 +106,6 @@
                 @click="editItem(item)"
             >
                 mdi-pencil
-            </v-icon>
-            <v-icon
-                small
-                @click="deleteItem(item)"
-            >
-                mdi-delete
             </v-icon>
             </td>
         </tr>
@@ -239,6 +233,7 @@ import { mapState } from 'vuex'
 
     methods: {
       async initialize () {
+        this.medicos = []
         const response = await fetch('https://centromedicofuchicovid.herokuapp.com/getDoctor')
         const res = await response.json()
         res.forEach(medico => {
@@ -267,11 +262,6 @@ import { mapState } from 'vuex'
         this.dialog = true
       },
 
-      deleteItem (item) {
-        const index = this.medicos.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.medicos.splice(index, 1)
-      },
-
       close () {
         this.dialog = false
         setTimeout(() => {
@@ -282,10 +272,10 @@ import { mapState } from 'vuex'
 
       save () {
         if (this.editedIndex > -1) {
+          this.updateInfoMedicos(this.editedItem)
           Object.assign(this.medicos[this.editedIndex], this.editedItem)
         } else {
           this.addMedico(this.editedItem)
-          this.medicos.push(this.editedItem)
         }
         this.close()
       },
@@ -318,11 +308,40 @@ import { mapState } from 'vuex'
             const response = await fetch('https://centromedicofuchicovid.herokuapp.com/createDoctor', data)
             console.log('Registrando medico...3');
             console.log(response)
+            this.initialize()
             } catch (error) {
                 console.log(error)
             } 
-
-        }      
+        },
+      async updateInfoMedicos(editedItem) {
+          let res = null
+          try {
+              const myHeaders = new Headers();
+              const data = {
+              method: 'PUT',
+                headers: myHeaders,
+                body: new URLSearchParams({
+                'nombre1': medico.doctor_name1,
+                'nombre2': medico.doctor_name2,
+                'apellido1': medico.doctor_lastname1,
+                'apellido2': medico.doctor_lastname2,
+                'documento': medico.doctor_document,
+                'tipoDocumento': medico.type_of_document,
+                'universidad': medico.university_name,
+                'entidad': medico.entity_name,
+                'direccion': medico.doctor_address,
+                'barrio': medico.neighborhood,
+                })
+              }
+              console.log(data)
+              console.log('Actualizando medico...');
+              const response = await fetch('https://centromedicofuchicovid.herokuapp.com/editDoctor', data)//************************************ CORREGIR
+              res = await response.json()
+              console.log(res)
+          } catch (error) {
+              console.log(error)
+          }
+        },          
     }
   }
 </script>
