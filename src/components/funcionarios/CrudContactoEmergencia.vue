@@ -32,7 +32,7 @@
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                       <v-text-field v-model="editedItem.nombre2" 
-                        label="nombre2" required></v-text-field>
+                        label="nombre2" ></v-text-field>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                       <v-text-field v-model="editedItem.apellido1" 
@@ -40,7 +40,7 @@
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                       <v-text-field v-model="editedItem.apellido2" 
-                        label="apellido2" required></v-text-field>
+                        label="apellido2" ></v-text-field>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                       <v-text-field v-model="editedItem.celular" 

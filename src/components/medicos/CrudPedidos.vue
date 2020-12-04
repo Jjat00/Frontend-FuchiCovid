@@ -28,7 +28,7 @@
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                     <v-combobox v-model="editedItem.medicina" 
-                        :items="itemsMedicinas" label="medicina" required>
+                        :items="itemsMedicinas" label="medicamento" required>
                     </v-combobox>
                     </v-flex>
                     <v-flex xs12 sm6 md4>

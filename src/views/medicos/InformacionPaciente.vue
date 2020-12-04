@@ -40,7 +40,27 @@ export default {
                 'apellido': resDB[0].patient_lastname1
             }
             console.log(this.paciente) 
+      },      
+      async getContactosEmergencia () {
+        this.contactos = []
+        const res = await fetch(`https://centromedicofuchicovid.herokuapp.com/getEmergencyContact/${this.documentoPaciente}`)
+        const resDB = await res.json()
+        console.log(resDB)  
+        resDB.forEach(contactoPaciente => {
+            const auxContactoPacientes = {
+              documento: contactoPaciente.contact_document,
+              nombre1: contactoPaciente.name1,
+              nombre2: contactoPaciente.name2,
+              apellido1: contactoPaciente.lastname1,
+              apellido2: contactoPaciente.lastname2,
+              celular:contactoPaciente.phone,
+              relacion: contactoPaciente.relationship,
+              correo: contactoPaciente.email
+            }
+            this.contacto.push(auxContactoPacientes)
+        });                  
       }
+      
     }
 }
 </script>

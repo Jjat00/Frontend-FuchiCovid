@@ -64,8 +64,8 @@ export default {
       valid: true,
       showMensajeError: false,
       usuario:{
-          documento: 1088597617,
-          password: 'jjatjjat',
+          documento: null,
+          password: '',
       },
       name: '',
       documentoRules: [

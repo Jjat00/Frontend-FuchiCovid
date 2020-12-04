@@ -7,8 +7,10 @@ export default new Vuex.Store({
     state: {
         barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
         barImage: 'https://i.ibb.co/CmhDXtS/43532.jpg',
-        imagenDrawer: 'https://i.ibb.co/VmzYD8s/coronavirus-4972480-1920-3.png',
-        loginImage: 'https://i.ibb.co/6Z2g3Qp/coronavirus-4972480-1920-3-1.png',
+        //imagenDrawer: 'https://i.ibb.co/VmzYD8s/coronavirus-4972480-1920-3.png',
+        imagenDrawer: 'https://i.ibb.co/QpK7HyB/coronavirus-disease-covid-2019-5060427-1920-1.png',
+        //loginImage: 'https://i.ibb.co/6Z2g3Qp/coronavirus-4972480-1920-3-1.png',
+        loginImage: 'https://i.ibb.co/LPSD6Lw/coronavirus-disease-covid-2019-5060427-1920.png',
         imagenServidorPublico: 'https://i.ibb.co/rwxmgts/empleado-publico1.jpg',
         imagenMedico: 'https://i.ibb.co/4sbvF4n/medico.png',
         drawer: null,
