@@ -103,8 +103,9 @@ export default {
     }),
     methods:{
         async initialize () {
+          console.log(`${this.urlRoot}/getPatientByDoctor/${this.documentoMedico}`)
             try {
-            const res = await fetch(`https://centromedicofuchicovid.herokuapp.com/getPatientByDoctor/${this.documentoMedico}`)
+            const res = await fetch(`${this.urlRoot}/getPatientByDoctor/${this.documentoMedico}`)
             const resDB = await res.json()
             console.log(resDB) 
             resDB.forEach(paciente => {
@@ -134,7 +135,7 @@ export default {
       },   
     },
     computed:{
-        ...mapState(['documentoMedico'])
+        ...mapState(['documentoMedico', 'urlRoot'])
     },
     created(){
         this.initialize()

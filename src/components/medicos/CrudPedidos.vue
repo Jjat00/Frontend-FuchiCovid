@@ -121,7 +121,7 @@ import { mapState } from 'vuex'
     }),
 
     computed: {
-      ...mapState(['documentoMedico']),
+      ...mapState(['documentoMedico', 'urlRoot']),
       formTitle () {
         return this.editedIndex === -1 ? 'Registrar Pedido' : 'Actualizar pedido'
       }
@@ -140,7 +140,7 @@ import { mapState } from 'vuex'
       async initialize () {
         try {
           this.stock = []
-          const res = await fetch(`https://centromedicofuchicovid.herokuapp.com/getStock`)
+          const res = await fetch(`${this.urlRoot}/getStock`)
           const resDB = await res.json()
           console.log(resDB)
           resDB.forEach(stock => {
@@ -202,7 +202,7 @@ import { mapState } from 'vuex'
               }
               
             console.log('Registrando visita...');
-            const response = await fetch('https://centromedicofuchicovid.herokuapp.com/doOrder', data)
+            const response = await fetch(`${this.urlRoot}/doOrder`, data)
             console.log(response)
             this.initialize()
             } catch (error) {

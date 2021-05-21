@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState, mapActions} from 'vuex'
+import { mapActions} from 'vuex'
 import drawerFuncionarios from '@/components/funcionarios/DrawerFuncionarios.vue'
 import informes from '@/components/Informes.vue'
 

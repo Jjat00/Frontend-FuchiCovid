@@ -1,9 +1,11 @@
 <template>
   <v-container>
+    <v-divider/>
     <v-card
         class="mx-auto"
-        max-width="450"
-        max-height="600"
+        max-width="500"
+        max-height="400"
+        color="white"
     >
     <v-card-title class="justify-center">
         Inicio de Sesión de Usuario
@@ -50,7 +52,6 @@
     </v-card-text>
 
     </v-card>
-
   </v-container>
 </template>
 
@@ -135,4 +136,6 @@ export default {
     font-size: 20px;
     color: rgb(156, 24, 24);
   }
+
+
 </style>

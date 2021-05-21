@@ -47,12 +47,12 @@
                     </v-combobox>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.universidad" 
-                        label="universidad" required></v-text-field>
+                    <v-combobox v-model="editedItem.universidad" 
+                        :items="itemsUniversidades" label="Universidad" required></v-combobox>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.entidad" 
-                        label="entidad" required></v-text-field>
+                    <v-combobox v-model="editedItem.entidad" 
+                        :items="itemsEntidadSalud" label="Entidad Salud" required></v-combobox>
                     </v-flex>
                     <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.direccion" 
@@ -184,6 +184,16 @@ import { mapState } from 'vuex'
           'C.C',
           'C.E'
       ],
+      itemsUniversidades: [
+          'Universidad del Vale',
+          'Universidad de Antioquia',
+          'Universidad Nacional'
+      ],
+      itemsEntidadSalud: [
+          'Comfama',
+          'Salud total',
+          'Salud Neutral'
+      ],
       editedIndex: -1,
       editedItem: {
         nombre1: '',
@@ -214,7 +224,7 @@ import { mapState } from 'vuex'
     }),
 
     computed: {
-      ...mapState(['documentoFuncionario']),
+      ...mapState(['documentoFuncionario', 'urlRoot']),
 
       formTitle () {
         return this.editedIndex === -1 ? 'Regitrar médico' : 'Actualizar médico'
@@ -234,7 +244,7 @@ import { mapState } from 'vuex'
     methods: {
       async initialize () {
         this.medicos = []
-        const response = await fetch('https://centromedicofuchicovid.herokuapp.com/getDoctor')
+        const response = await fetch(`${this.urlRoot}/getDoctor`)
         const res = await response.json()
         res.forEach(medico => {
             const auxMedicos = {
@@ -305,7 +315,7 @@ import { mapState } from 'vuex'
                 })
             }
             console.log('Registrando medico...2');
-            const response = await fetch('https://centromedicofuchicovid.herokuapp.com/createDoctor', data)
+            const response = await fetch(`${this.urlRoot}/createDoctor`, data)
             console.log('Registrando medico...3');
             console.log(response)
             this.initialize()
@@ -335,7 +345,7 @@ import { mapState } from 'vuex'
               }
               console.log(data)
               console.log('Actualizando medico...');
-              const response = await fetch('https://centromedicofuchicovid.herokuapp.com/editDoctor', data)//************************************ CORREGIR
+              const response = await fetch(`${this.urlRoot}/editDoctor`, data)//************************************ CORREGIR
               res = await response.json()
               console.log(res)
           } catch (error) {

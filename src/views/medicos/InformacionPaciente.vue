@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import drawerMedicos from '@/components/medicos/DrawerMedicos.vue'
 import visitaPaciente from '@/components/medicos/VisitaPaciente.vue'
 import crudPersonasPaciente from '@/components/medicos/CrudPersonasPaciente.vue'
@@ -33,7 +34,7 @@ export default {
     },
     methods:{
         async obtenerPaciente(){
-            const res = await fetch(`https://centromedicofuchicovid.herokuapp.com/getPatient/${this.documentoPaciente}`)
+            const res = await fetch(`${this.urlRoot}/getPatient/${this.documentoPaciente}`)
             const resDB = await res.json()
             this.paciente = {
                 'nombre': resDB[0].patient_name1,
@@ -43,7 +44,7 @@ export default {
       },      
       async getContactosEmergencia () {
         this.contactos = []
-        const res = await fetch(`https://centromedicofuchicovid.herokuapp.com/getEmergencyContact/${this.documentoPaciente}`)
+        const res = await fetch(`${this.urlRoot}/getEmergencyContact/${this.documentoPaciente}`)
         const resDB = await res.json()
         console.log(resDB)  
         resDB.forEach(contactoPaciente => {
@@ -61,10 +62,9 @@ export default {
         });                  
       }
       
-    }
+    },
+    computed:{
+        ...mapState(['urlRoot'])
+    },
 }
 </script>
-
-<style>
-
-</style>

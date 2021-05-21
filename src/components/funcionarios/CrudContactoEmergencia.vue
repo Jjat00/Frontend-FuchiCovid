@@ -109,6 +109,7 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex'
   export default {
     name: 'crudContactoEmergencia',
     data: () => ({
@@ -185,10 +186,12 @@
         celular: null,
         relacion: '',
         correo: '',
-      }
+      },
     }),
 
     computed: {
+      ...mapState(['urlRoot']),
+
       formTitle () {
         return this.editedIndex === -1 ? 'Registrar contacto' : 'Actualizar contacto'
       }
@@ -208,7 +211,7 @@
     methods: {
       async initialize () {
         this.contacto = []
-        const res = await fetch(`https://centromedicofuchicovid.herokuapp.com/getEmergencyContact/${this.documentoPaciente}`)
+        const res = await fetch(`${this.urlRoot}/getEmergencyContact/${this.documentoPaciente}`)
         const resDB = await res.json()
         console.log(resDB)  
         resDB.forEach(contactoPaciente => {
@@ -268,7 +271,7 @@
                     'contact_document': editedItem.documento
                     })
                 }
-                const response = await fetch('https://centromedicofuchicovid.herokuapp.com/deleteEmergencyContact', data)
+                const response = await fetch(`${this.urlRoot}/deleteEmergencyContact`, data)
                 console.log(response)
             } catch (error) {
                 console.log(error)
@@ -296,7 +299,7 @@
               }
               console.log(data)
               console.log('Actualizando contacto...');
-              const response = await fetch('https://centromedicofuchicovid.herokuapp.com/editEmergencyContact', data)//************************************ CORREGI
+              const response = await fetch(`${this.urlRoot}/editEmergencyContact`, data)
               console.log(response)
           } catch (error) {
               console.log(error)
@@ -324,7 +327,7 @@
               }
               
             console.log('Registrando contacto de emergencia...');
-            const response = await fetch('https://centromedicofuchicovid.herokuapp.com/createEmergencyContact', data)
+            const response = await fetch(`${this.urlRoot}/createEmergencyContact`, data)
             console.log(response)
             this.initialize() 
             } catch (error) {

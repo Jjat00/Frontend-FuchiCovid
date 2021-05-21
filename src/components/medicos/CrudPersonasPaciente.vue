@@ -82,6 +82,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   export default {
     name: 'crudPersonasPaciente',
     data: () => ({
@@ -144,6 +145,7 @@
     }),
 
     computed: {
+      ...mapState(['urlRoot']),
       formTitle () {
         return this.editedIndex === -1 ? 'Registrar nueva persona' : 'Actualizar persona'
       }
@@ -163,7 +165,7 @@
     methods: {
       async initialize () {
         try {        
-          const response = await fetch(`https://centromedicofuchicovid.herokuapp.com/getRoommates/${this.documentoPaciente}`)
+          const response = await fetch(`${this.urlRoot}/getRoommates/${this.documentoPaciente}`)
           const res = await response.json()  
           console.log(res)
           res.forEach(element => {
@@ -231,7 +233,7 @@
             }
               
             console.log('Registrando persona con la que vive...');
-            const response = await fetch('https://centromedicofuchicovid.herokuapp.com/createRoommates', data)
+            const response = await fetch(`${this.urlRoot}/createRoommates`, data)
             res = await response.json()
             console.log(res)
             } catch (error) {

@@ -153,6 +153,7 @@
 </template>
 
 <script>
+  import { mapState} from 'vuex'
   export default {
     name: 'crudPacientes',
     data: () => ({
@@ -291,9 +292,11 @@
         ciudadInfeccion:'',
         direccion: '',
         barrio: '',
-      }
+      },
     }),
     computed: {
+      ...mapState(['urlRoot']),
+      
       formTitle () {
         return this.editedIndex === -1 ? 'Registrar paciente' : 'Actualizar paciente'
       }
@@ -310,7 +313,7 @@
       async initialize () {
         try {
           this.pacientes = []
-          const res = await fetch('https://centromedicofuchicovid.herokuapp.com/getPatient/')
+          const res = await fetch(`${this.urlRoot}/getPatient/`)
           const resDB = await res.json()
           console.log(resDB) 
           resDB.forEach(paciente => {
@@ -393,7 +396,7 @@
                 })
             }
             console.log('Registrando paciente...2');
-            const response = await fetch('https://centromedicofuchicovid.herokuapp.com/createPatient', data)
+            const response = await fetch(`${this.urlRoot}/createPatient`, data)
             console.log('Registrando paciente...3');
             console.log(response)
             this.initialize()
@@ -427,7 +430,7 @@
               }
               console.log(data)
               console.log('Registrando paciente...');
-              const response = await fetch('https://centromedicofuchicovid.herokuapp.com/editPatient', data)
+              const response = await fetch(`${this.urlRoot}/editPatient`, data)
               console.log('Registrando paciente...2');
               res = await response.json()
               console.log(res)
@@ -446,7 +449,7 @@
                     'patient_document': editedItem.documento
                     })
                 }
-                const response = await fetch('https://centromedicofuchicovid.herokuapp.com/deletePatient', data)
+                const response = await fetch(`${this.urlRoot}/deletePatient`, data)
                 //const resDB = await response.json()
                 console.log(response)
             } catch (error) {

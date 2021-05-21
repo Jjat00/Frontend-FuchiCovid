@@ -56,7 +56,7 @@
 
 <style scoped>
     .titleLogin{
-        color: rgb(224, 224, 224);
+        color: rgb(39, 39, 39);
         padding-left: 10px;
         font-weight: bold;
         font-size: 30px;

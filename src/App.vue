@@ -42,6 +42,5 @@ export default {
         margin-right: 0;
         margin-left: 0;
         max-width: 2000px;
-    }
-
+    } 
 </style>

@@ -88,11 +88,12 @@ export default {
         }
       ],        
     }),
+      
     methods:{
         async initialize () {
             try {
             this.reportes = []
-            const res = await fetch(`https://centromedicofuchicovid.herokuapp.com/getReport/`)
+            const res = await fetch(`${this.urlRoot}/getReport/`)
             const resDB = await res.json()
             console.log(resDB) 
             resDB.forEach(reporte => {
@@ -123,7 +124,7 @@ export default {
                 body: new URLSearchParams({})
             }            
             console.log('generando reportes...')
-            const response = await fetch('https://centromedicofuchicovid.herokuapp.com/createReport', data)
+            const response = await fetch(`${this.urlRoot}/createReport`, data)
             console.log(response)
             this.initialize()
           } catch (error) {
@@ -132,7 +133,7 @@ export default {
       }
     },
     computed:{
-        ...mapState(['documentoMedico'])
+        ...mapState(['documentoMedico', 'urlRoot'])
     },
     created(){
         this.initialize()

@@ -177,7 +177,7 @@ import { mapState } from 'vuex'
     }),
 
     computed: {
-      ...mapState(['documentoMedico']),
+      ...mapState(['documentoMedico', 'urlRoot']),
       formTitle () {
         return this.editedIndex === -1 ? 'Registrar visita' : 'Actualizar visita'
       }
@@ -197,7 +197,7 @@ import { mapState } from 'vuex'
     methods: {
       async initialize () {
         try {
-          const res = await fetch(`https://centromedicofuchicovid.herokuapp.com/getRegistry/${this.documentoPaciente}`)
+          const res = await fetch(`${this.urlRoot}/getRegistry/${this.documentoPaciente}`)
           const resDB = await res.json()
           console.log(resDB)
           let NoVisita = 0
@@ -269,7 +269,7 @@ import { mapState } from 'vuex'
               }
               
             console.log('Registrando visita...');
-            const response = await fetch('https://centromedicofuchicovid.herokuapp.com/createRegistry', data)
+            const response = await fetch(`${this.urlRoot}/createRegistry`, data)
             res = await response.json()
             console.log(res)
             } catch (error) {

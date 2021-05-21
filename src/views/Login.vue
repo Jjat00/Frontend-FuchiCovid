@@ -4,9 +4,10 @@
         
         <!-- <h1 class="titleLogin">FuchiCOVID</h1> -->
 
-        <v-img
-            :src = loginImage
-            max-width="1500">
+        <v-img :src = loginImage
+        max-width="3000"
+        max-height="700"
+        >
          <v-row>
             <v-col>
                 <loginUsuario class="login"></loginUsuario>
